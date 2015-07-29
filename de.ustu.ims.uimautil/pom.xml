@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>uimautil</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/nilsreiter/uima-util</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -35,4 +35,14 @@
     	<scope>test</scope>
     </dependency>
   </dependencies>
+  <issueManagement>
+  	<system>GitHub Issues</system>
+  	<url>https://github.com/nilsreiter/uima-util/issues</url>
+  </issueManagement>
+  <scm>
+  	<url>https://github.com/nilsreiter/uima-util</url>
+  	<connection>scm:git:git://github.com/nilsreiter/uima-util.git</connection>
+  	<developerConnection>scm:git:git@github.com/nilsreiter/uima-util.git</developerConnection>
+  </scm>
+  <description>A collection of utility components for UIMA that integrate with UIMAfit and DKpro</description>
 </project>
