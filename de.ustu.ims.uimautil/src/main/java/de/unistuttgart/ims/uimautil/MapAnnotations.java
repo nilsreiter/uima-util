@@ -1,4 +1,4 @@
-package de.ustu.ims.uimautil;
+package de.unistuttgart.ims.uimautil;
 
 import java.util.HashSet;
 import java.util.Set;

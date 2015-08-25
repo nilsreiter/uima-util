@@ -1,4 +1,4 @@
-package de.ustu.ims.uimautil;
+package de.unistuttgart.ims.uimautil;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Sentence;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.unistuttgart.ims.uimautil.MapAnnotations;
 
 public class TestMapAnnotations {
 	JCas jcas;
