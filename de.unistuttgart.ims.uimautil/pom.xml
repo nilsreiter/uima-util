@@ -6,10 +6,25 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unistuttgart.ims</groupId>
 	<artifactId>uimautil</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.2</version>
 	<packaging>jar</packaging>
 	<name>uimautil</name>
 	<url>https://github.com/nilsreiter/uima-util</url>
+	<licenses>
+  <license>
+    <name>Apache License, Version 2.0</name>
+    <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    <distribution>repo</distribution>
+  </license>
+</licenses>
+	<developers>
+		<developer>
+			<id>reiterns</id>
+			<name>Nils Reiter</name>
+			<email>nils.reiter@ims.uni-stuttgart.de</email>
+		</developer>
+	</developers>
+	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
