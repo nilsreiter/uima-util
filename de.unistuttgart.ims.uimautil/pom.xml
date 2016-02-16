@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unistuttgart.ims</groupId>
 	<artifactId>uimautil</artifactId>
-	<version>0.3-SNAPSHOT</version>
+	<version>0.4-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>uimautil</name>
 	<url>https://github.com/nilsreiter/uima-util</url>
@@ -47,6 +47,13 @@
     	</artifactId>
 			<version>1.7.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>
+				de.tudarmstadt.ukp.dkpro.core.api.metadata-asl
+			</artifactId>
+			<version>1.7.0</version>
 		</dependency>
 	</dependencies>
 	<issueManagement>
