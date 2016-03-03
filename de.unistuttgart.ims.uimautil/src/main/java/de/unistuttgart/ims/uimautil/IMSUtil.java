@@ -1,11 +1,15 @@
 package de.unistuttgart.ims.uimautil;
 
 import java.util.Collection;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.uima.jcas.tcas.Annotation;
 
 public class IMSUtil {
+
+	static Pattern pattern = null;
+
 	/**
 	 * trims the annotated text. Similar to {@link String#trim()}, this method
 	 * moves the begin and end indexes towards the middle as long as there is
@@ -22,6 +26,8 @@ public class IMSUtil {
 	 */
 	public static <T extends Annotation> T trim(T annotation, char... ws) {
 		char[] s = annotation.getCoveredText().toCharArray();
+		if (s.length == 0) return annotation;
+
 		int b = 0;
 		while (ArrayUtils.contains(ws, s[b])) {
 			b++;
@@ -37,12 +43,23 @@ public class IMSUtil {
 	}
 
 	/**
-	 * @see #trim(Annotation, char...).
+	 * 
+	 * 
+	 * This method first checks whether the string contains whitespace at
+	 * all.
+	 * 
+	 * @see {@link #trim(Annotation, char...) }
 	 * @param annotation
 	 *            The annotation to trim
 	 * @return
 	 */
 	public static <T extends Annotation> T trim(T annotation) {
+		if (pattern == null) {
+			pattern = Pattern.compile("\\S");
+		}
+		if (!pattern.matcher(annotation.getCoveredText()).find()) {
+			return annotation;
+		}
 		return trim(annotation, ' ', '\n', '\t', '\r', '\f');
 	}
 

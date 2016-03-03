@@ -42,10 +42,9 @@ public class TestIMSUtil {
 		assertEquals(11, anno.getEnd());
 		assertEquals("ipsum", anno.getCoveredText());
 
+		anno = IMSUtil.trim(createAnnotation(jcas, 12, 14, Annotation.class));
+		assertEquals(12, anno.getBegin());
+		assertEquals(14, anno.getEnd());
 	}
 
-	@Test(expected = ArrayIndexOutOfBoundsException.class)
-	public void testTrim2() {
-		anno = IMSUtil.trim(createAnnotation(jcas, 12, 14, Annotation.class));
-	}
 }
