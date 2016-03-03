@@ -1,5 +1,7 @@
 package de.unistuttgart.ims.uimautil;
 
+import java.util.Collection;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.uima.jcas.tcas.Annotation;
 
@@ -42,5 +44,11 @@ public class IMSUtil {
 	 */
 	public static <T extends Annotation> T trim(T annotation) {
 		return trim(annotation, ' ', '\n', '\t', '\r', '\f');
+	}
+
+	public static <T extends Annotation> void trim(Collection<T> annotations) {
+		for (T anno : annotations) {
+			trim(anno, ' ', '\n', '\t', '\r', '\f');
+		}
 	}
 }
