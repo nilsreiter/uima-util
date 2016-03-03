@@ -6,7 +6,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unistuttgart.ims</groupId>
 	<artifactId>uimautil</artifactId>
-	<version>0.4-SNAPSHOT</version>
+	<version>0.4.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>uimautil</name>
 	<url>https://github.com/nilsreiter/uima-util</url>
