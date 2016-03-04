@@ -78,4 +78,25 @@ public class IMSUtil {
 			trim(anno, ' ', '\n', '\t', '\r', '\f');
 		}
 	}
+
+	/**
+	 * Moves the begin-index as long as a character contain in the array is at
+	 * the beginning.
+	 * 
+	 * @param annotation
+	 * @param ws
+	 * @return
+	 */
+	public static <T extends Annotation> T trimFront(T annotation, char... ws) {
+		char[] s = annotation.getCoveredText().toCharArray();
+		if (s.length == 0) return annotation;
+
+		int b = 0;
+		while (ArrayUtils.contains(ws, s[b])) {
+			b++;
+		}
+
+		annotation.setBegin(annotation.getBegin() + b);
+		return annotation;
+	}
 }
