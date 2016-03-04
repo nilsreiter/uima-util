@@ -37,7 +37,7 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-
+		// TODO: new implementation based on jcas.removeAllIncludingSubtypes(i);
 		List<Annotation> annList =
 				new LinkedList<Annotation>(JCasUtil.select(jcas, clazz));
 		for (Annotation anno : annList) {
