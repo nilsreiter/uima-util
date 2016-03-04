@@ -1,9 +1,11 @@
 package de.unistuttgart.ims.uimautil;
 
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 
 public class IMSUtil {
@@ -63,6 +65,14 @@ public class IMSUtil {
 		return trim(annotation, ' ', '\n', '\t', '\r', '\f');
 	}
 
+	/**
+	 * trims an entire collection of annotations. Beware: directly trimming the
+	 * result of {@link JCasUtil#select()} throws a
+	 * {@link ConcurrentModificationException}.
+	 * 
+	 * @param annotations
+	 *            The annotations you want to trim
+	 */
 	public static <T extends Annotation> void trim(Collection<T> annotations) {
 		for (T anno : annotations) {
 			trim(anno, ' ', '\n', '\t', '\r', '\f');
