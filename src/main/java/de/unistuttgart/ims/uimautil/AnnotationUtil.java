@@ -24,6 +24,8 @@ public class AnnotationUtil {
 	 *            The annotation to trim
 	 * @param ws
 	 *            An array of chars that are to be considered whitespace
+	 * @param <T>
+	 *            The annotation type
 	 * @return The trimmed annotation (not a copy)
 	 */
 	public static <T extends Annotation> T trim(T annotation, char... ws) {
@@ -48,12 +50,13 @@ public class AnnotationUtil {
 	 * 
 	 * 
 	 * This method first checks whether the string contains whitespace at
-	 * all.
+	 * all. See also {@link #trim(Annotation, char...) }
 	 * 
-	 * @see {@link #trim(Annotation, char...) }
 	 * @param annotation
 	 *            The annotation to trim
-	 * @return
+	 * @param <T>
+	 *            the annotation type
+	 * @return the trimmed annotation
 	 */
 	public static <T extends Annotation> T trim(T annotation) {
 		if (pattern == null) {
@@ -67,11 +70,13 @@ public class AnnotationUtil {
 
 	/**
 	 * trims an entire collection of annotations. Beware: directly trimming the
-	 * result of {@link JCasUtil#select()} throws a
-	 * {@link ConcurrentModificationException}.
+	 * result of {@link JCasUtil#select(org.apache.uima.jcas.JCas, Class)}
+	 * throws a {@link ConcurrentModificationException}.
 	 * 
 	 * @param annotations
 	 *            The annotations you want to trim
+	 * @param <T>
+	 *            the annotation type
 	 */
 	public static <T extends Annotation> void trim(Collection<T> annotations) {
 		for (T anno : annotations) {
@@ -84,8 +89,12 @@ public class AnnotationUtil {
 	 * the beginning.
 	 * 
 	 * @param annotation
+	 *            the annotation to be trimmed
 	 * @param ws
-	 * @return
+	 *            an array of chars to be trimmed
+	 * @param <T>
+	 *            the annotation type
+	 * @return the trimmed annotation
 	 */
 	public static <T extends Annotation> T trimFront(T annotation, char... ws) {
 		char[] s = annotation.getCoveredText().toCharArray();
