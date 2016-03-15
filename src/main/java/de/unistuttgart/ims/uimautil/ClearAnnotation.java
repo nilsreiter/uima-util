@@ -9,10 +9,10 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
 /**
- * Removes all annotations of the given type
- * 
- * @author reiterns
+ * This component removes all annotations of a given type.
  *
+ * @author reiterns
+ * @since 0.2
  */
 public class ClearAnnotation extends JCasAnnotator_ImplBase {
 
@@ -24,13 +24,12 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize(final UimaContext context)
-			throws ResourceInitializationException {
+	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		Class<?> cl;
 		try {
 			cl = Class.forName(type);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
 

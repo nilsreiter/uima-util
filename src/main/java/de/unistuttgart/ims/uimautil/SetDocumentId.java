@@ -7,6 +7,13 @@ import org.apache.uima.jcas.JCas;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 
+/**
+ * This components sets the feature DocumentId in {@link DocumentMetaData}.
+ *
+ * @author reiterns
+ * @since 0.4.1
+ *
+ */
 public class SetDocumentId extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_DOCUMENT_ID = "Document Id";
