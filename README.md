@@ -22,3 +22,6 @@ add uima-util as a dependency to your pom.xml file with the following:
 - `SetDocumentId`: Sets the document id
 - `SetJCasLanguage`: Sets the document language
 - `AnnotationUtil.trim()`: Various methods to trim annotations (removing whitespace at the front and end).
+
+## Documentation
+- [javadoc](http://nilsreiter.github.io/uima-util/)
