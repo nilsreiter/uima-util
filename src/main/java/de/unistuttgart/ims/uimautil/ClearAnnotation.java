@@ -12,6 +12,12 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 
+/**
+ * This component removes all annotations of a given type.
+ *
+ * @author reiterns
+ * @since 0.2
+ */
 public class ClearAnnotation extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_TYPE = "Type to Remove";
@@ -22,13 +28,12 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize(final UimaContext context)
-			throws ResourceInitializationException {
+	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		Class<?> cl;
 		try {
 			cl = Class.forName(type);
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			throw new ResourceInitializationException(e);
 		}
 
@@ -38,9 +43,8 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		// TODO: new implementation based on jcas.removeAllIncludingSubtypes(i);
-		List<Annotation> annList =
-				new LinkedList<Annotation>(JCasUtil.select(jcas, clazz));
-		for (Annotation anno : annList) {
+		final List<Annotation> annList = new LinkedList<Annotation>(JCasUtil.select(jcas, clazz));
+		for (final Annotation anno : annList) {
 			anno.removeFromIndexes();
 		}
 

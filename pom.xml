@@ -105,6 +105,7 @@
 					<header>${project.name}, ${project.version}</header>
 					<footer>${project.name}, ${project.version}</footer>
 					<doctitle>${project.name}, ${project.version}</doctitle>
+					<detectLinks />
 				</configuration>
 				<executions>
 					<execution>
