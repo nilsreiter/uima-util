@@ -12,6 +12,8 @@ public class AnnotationUtil {
 
 	static Pattern pattern = null;
 
+	static char[] whitespace = new char[] { ' ', '\n', '\t', '\r', '\f' };
+
 	/**
 	 * trims the annotated text. Similar to {@link String#trim()}, this method
 	 * moves the begin and end indexes towards the middle as long as there is
@@ -65,7 +67,7 @@ public class AnnotationUtil {
 		if (!pattern.matcher(annotation.getCoveredText()).find()) {
 			return annotation;
 		}
-		return trim(annotation, ' ', '\n', '\t', '\r', '\f');
+		return trim(annotation, whitespace);
 	}
 
 	/**
@@ -80,7 +82,7 @@ public class AnnotationUtil {
 	 */
 	public static <T extends Annotation> void trim(Collection<T> annotations) {
 		for (T anno : annotations) {
-			trim(anno, ' ', '\n', '\t', '\r', '\f');
+			trim(anno, whitespace);
 		}
 	}
 
@@ -95,8 +97,26 @@ public class AnnotationUtil {
 	 * @param <T>
 	 *            the annotation type
 	 * @return the trimmed annotation
+	 * @deprecated Use {@link #trimBegin(T,char...)} instead
 	 */
+	@Deprecated
 	public static <T extends Annotation> T trimFront(T annotation, char... ws) {
+		return trimBegin(annotation, ws);
+	}
+
+	/**
+	 * Moves the begin-index as long as a character contain in the array is at
+	 * the beginning.
+	 * 
+	 * @param annotation
+	 *            the annotation to be trimmed
+	 * @param ws
+	 *            an array of chars to be trimmed
+	 * @param <T>
+	 *            the annotation type
+	 * @return the trimmed annotation
+	 */
+	public static <T extends Annotation> T trimBegin(T annotation, char... ws) {
 		char[] s = annotation.getCoveredText().toCharArray();
 		if (s.length == 0) return annotation;
 
@@ -106,6 +126,28 @@ public class AnnotationUtil {
 		}
 
 		annotation.setBegin(annotation.getBegin() + b);
+		return annotation;
+	}
+
+	/**
+	 * Moves the end-index as long a character that is contained in the array is
+	 * at the end.
+	 * 
+	 * @param annotation
+	 *            The annotation to be trimmed.
+	 * @param ws
+	 *            An array of characters which are considered whitespace
+	 * @return The trimmed annotation
+	 */
+	public static <T extends Annotation> T trimEnd(T annotation, char... ws) {
+		char[] s = annotation.getCoveredText().toCharArray();
+		if (s.length == 0) return annotation;
+
+		int e = 0;
+		while (ArrayUtils.contains(ws, s[(s.length - 1) - e])) {
+			e++;
+		}
+		annotation.setEnd(annotation.getEnd() - e);
 		return annotation;
 	}
 }
