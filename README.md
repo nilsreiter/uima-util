@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/nilsreiter/uima-util.svg?branch=master)](https://travis-ci.org/nilsreiter/uima-util)
+
 # uima-util
 Utility components for Apache UIMA
 
