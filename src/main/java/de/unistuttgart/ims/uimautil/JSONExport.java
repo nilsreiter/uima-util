@@ -24,6 +24,7 @@ public class JSONExport extends JCasFileWriter_ImplBase {
 
 		object.put("text", jcas.getDocumentText());
 		object.put("language", jcas.getDocumentLanguage());
+		final JSONObject annotationList = new JSONObject();
 
 		final AnnotationIndex<Annotation> annoIndex = jcas.getAnnotationIndex();
 		final Iterator<Annotation> iter = annoIndex.iterator();
@@ -31,14 +32,15 @@ public class JSONExport extends JCasFileWriter_ImplBase {
 			final Annotation anno = iter.next();
 			final Type type = anno.getType();
 			final JSONObject jsonAnnotation = new JSONObject();
-			jsonAnnotation.put("type", type.getName());
+			// jsonAnnotation.put("type", type.getName());
 			for (final Feature feature : type.getFeatures()) {
 				if (feature.getRange().isPrimitive())
 					jsonAnnotation.put(feature.getShortName(), anno.getFeatureValueAsString(feature));
 			}
 
-			object.append("annotations", jsonAnnotation);
+			annotationList.append(type.getName(), jsonAnnotation);
 		}
+		object.put("annotations", annotationList);
 
 		// writing the output
 		OutputStream os = null;
