@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/nilsreiter/uima-util.svg?branch=master)](https://travis-ci.org/nilsreiter/uima-util)
+
 # uima-util
 Utility components for Apache UIMA
 
@@ -23,3 +25,6 @@ add uima-util as a dependency to your pom.xml file with the following:
 - `SetJCasLanguage`: Sets the document language
 - `AnnotationUtil` 
     - `trim()`: Various methods to trim annotations (removing whitespace at the front and end).
+
+## Documentation
+- [javadoc](http://nilsreiter.github.io/uima-util/)
