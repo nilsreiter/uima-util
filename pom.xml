@@ -83,6 +83,14 @@
 			</artifactId>
 			<version>1.7.0</version>
 		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>
+				de.tudarmstadt.ukp.dkpro.core.tokit-asl
+			</artifactId>
+			<version>1.7.0</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<issueManagement>
 		<system>GitHub Issues</system>
@@ -127,6 +135,7 @@
 					<header>${project.name}, ${project.version}</header>
 					<footer>${project.name}, ${project.version}</footer>
 					<doctitle>${project.name}, ${project.version}</doctitle>
+					<additionalparam>-Xdoclint:none</additionalparam>
 					<detectLinks />
 				</configuration>
 				<executions>
