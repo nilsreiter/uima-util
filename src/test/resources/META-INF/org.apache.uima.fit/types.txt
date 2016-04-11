@@ -1,1 +1,1 @@
-classpath*:desc/type/typesystem.xml
+classpath*:/typesystem.xml
