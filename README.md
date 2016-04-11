@@ -28,3 +28,7 @@ add uima-util as a dependency to your pom.xml file with the following:
 
 ## Documentation
 - [javadoc](http://nilsreiter.github.io/uima-util/)
+
+## Build
+- `mvn -DperformRelease=true deploy` to deploy to maven central.
+- `mvn clean javadoc:javadoc scm-publish:publish-scm` publish javadoc to github
