@@ -1,6 +1,7 @@
 package de.unistuttgart.ims.uimautil;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
@@ -47,6 +48,75 @@ public class TestWordListTagger {
 		assertEquals(1, JCasUtil.select(jcas, TestType.class).size());
 		final TestType tt = JCasUtil.selectByIndex(jcas, TestType.class, 0);
 		assertEquals("dolor", tt.getCoveredText());
+	}
+
+	@Test
+	public void testPlainTagging() throws AnalysisEngineProcessException, ResourceInitializationException {
+		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+				WordListTagger.WordList.class, getClass().getClassLoader().getResource("testwordlist.txt"));
+		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(WordListTagger.class,
+				WordListTagger.PARAM_TARGET_ANNOTATION, TestType.class, WordListTagger.RESOURCE_WORDLIST, erd));
+
+		assertTrue(JCasUtil.exists(jcas, TestType.class));
+		assertEquals(5, JCasUtil.select(jcas, TestType.class).size());
+		TestType tt;
+
+		int index;
+		index = 0;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("dolor", tt.getCoveredText());
+
+		index = 1;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("Ut", tt.getCoveredText());
+
+		index = 2;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("minim", tt.getCoveredText());
+
+		index = 3;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("eu", tt.getCoveredText());
+
+	}
+
+	@Test
+	public void testPlainTaggingCI() throws AnalysisEngineProcessException, ResourceInitializationException {
+		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+				WordListTagger.WordList.class, getClass().getClassLoader().getResource("testwordlist.txt"));
+		SimplePipeline.runPipeline(jcas,
+				AnalysisEngineFactory.createEngineDescription(WordListTagger.class,
+						WordListTagger.PARAM_TARGET_ANNOTATION, TestType.class, WordListTagger.RESOURCE_WORDLIST, erd,
+						WordListTagger.PARAM_CI, true));
+
+		assertTrue(JCasUtil.exists(jcas, TestType.class));
+		assertEquals(7, JCasUtil.select(jcas, TestType.class).size());
+		TestType tt;
+
+		int index;
+		index = 0;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("dolor", tt.getCoveredText());
+
+		index = 1;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("ut", tt.getCoveredText());
+
+		index = 2;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("Ut", tt.getCoveredText());
+
+		index = 3;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("minim", tt.getCoveredText());
+
+		index = 4;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("ut", tt.getCoveredText());
+
+		index = 5;
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
+		assertEquals("eu", tt.getCoveredText());
 
 	}
 }

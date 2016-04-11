@@ -3,6 +3,9 @@ package de.unistuttgart.ims.uimautil;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UimaContext;
@@ -83,7 +86,16 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 			}
 
 		} else {
-			// TODO: not implemented, should tag every substring
+
+			final Set<String> words = (caseIndependent ? wordList.lowerWords : wordList.words);
+			for (final String s : words) {
+				final Pattern pattern = Pattern.compile("\\b" + s + "\\b",
+						Pattern.UNICODE_CASE | (caseIndependent ? Pattern.CASE_INSENSITIVE : 0));
+				final Matcher matcher = pattern.matcher(jcas.getDocumentText());
+				while (matcher.find()) {
+					AnnotationFactory.createAnnotation(jcas, matcher.start(), matcher.end(), targetAnnotation);
+				}
+			}
 		}
 	}
 
