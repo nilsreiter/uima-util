@@ -14,7 +14,7 @@ add uima-util as a dependency to your pom.xml file with the following:
 <dependency>
   <groupId>de.unistuttgart.ims</groupId>
   <artifactId>uima-util</artifactId>
-  <version>0.4.1</version>
+  <version>0.4.2</version>
 </dependency>
 ```
 
@@ -23,7 +23,8 @@ add uima-util as a dependency to your pom.xml file with the following:
 - `MapAnnotations`: Creates new annotations with the same span as existing annotations, optionally deleting the existing ones
 - `SetDocumentId`: Sets the document id
 - `SetJCasLanguage`: Sets the document language
-- `AnnotationUtil.trim()`: Various methods to trim annotations (removing whitespace at the front and end).
+- `AnnotationUtil` 
+    - `trim()`: Various methods to trim annotations (removing whitespace at the front and end).
 
 ## Documentation
 - [javadoc](http://nilsreiter.github.io/uima-util/)

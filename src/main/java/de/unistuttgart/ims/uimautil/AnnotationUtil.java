@@ -1,3 +1,18 @@
+/*******************************************************************************
+ * Copyright 2016 by Nils Reiter
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *******************************************************************************/
 package de.unistuttgart.ims.uimautil;
 
 import java.util.Collection;
@@ -17,6 +32,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 public class AnnotationUtil {
 
 	static Pattern pattern = null;
+
+	static char[] whitespace = new char[] { ' ', '\n', '\t', '\r', '\f' };
 
 	/**
 	 * trims the annotated text. Similar to {@link String#trim()}, this method
@@ -75,7 +92,7 @@ public class AnnotationUtil {
 		if (!pattern.matcher(annotation.getCoveredText()).find()) {
 			return annotation;
 		}
-		return trim(annotation, ' ', '\n', '\t', '\r', '\f');
+		return trim(annotation, whitespace);
 	}
 
 	/**
@@ -108,10 +125,27 @@ public class AnnotationUtil {
 	 * @return the trimmed annotation
 	 * @since 0.4.1
 	 */
+	@Deprecated
 	public static <T extends Annotation> T trimFront(T annotation, char... ws) {
-		final char[] s = annotation.getCoveredText().toCharArray();
-		if (s.length == 0)
-			return annotation;
+		return trimBegin(annotation, ws);
+	}
+
+	/**
+	 * Moves the begin-index as long as a character contain in the array is at
+	 * the beginning.
+	 * 
+	 * @param annotation
+	 *            the annotation to be trimmed
+	 * @param ws
+	 *            an array of chars to be trimmed
+	 * @param <T>
+	 *            the annotation type
+	 * @return the trimmed annotation
+     * @since 0.4.2
+	 */
+	public static <T extends Annotation> T trimBegin(T annotation, char... ws) {
+		char[] s = annotation.getCoveredText().toCharArray();
+		if (s.length == 0) return annotation;
 
 		int b = 0;
 		while (ArrayUtils.contains(ws, s[b])) {
@@ -119,6 +153,29 @@ public class AnnotationUtil {
 		}
 
 		annotation.setBegin(annotation.getBegin() + b);
+		return annotation;
+	}
+
+	/**
+	 * Moves the end-index as long a character that is contained in the array is
+	 * at the end.
+	 * 
+	 * @param annotation
+	 *            The annotation to be trimmed.
+	 * @param ws
+	 *            An array of characters which are considered whitespace
+	 * @return The trimmed annotation
+     * @since 0.4.2
+	 */
+	public static <T extends Annotation> T trimEnd(T annotation, char... ws) {
+		char[] s = annotation.getCoveredText().toCharArray();
+		if (s.length == 0) return annotation;
+
+		int e = 0;
+		while (ArrayUtils.contains(ws, s[(s.length - 1) - e])) {
+			e++;
+		}
+		annotation.setEnd(annotation.getEnd() - e);
 		return annotation;
 	}
 }
