@@ -127,6 +127,7 @@
 					<header>${project.name}, ${project.version}</header>
 					<footer>${project.name}, ${project.version}</footer>
 					<doctitle>${project.name}, ${project.version}</doctitle>
+					<additionalparam>-Xdoclint:none</additionalparam>
 					<detectLinks />
 				</configuration>
 				<executions>
