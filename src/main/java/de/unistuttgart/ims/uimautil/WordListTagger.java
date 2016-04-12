@@ -23,6 +23,14 @@ import org.apache.uima.resource.DataResource;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.SharedResourceObject;
 
+/**
+ * This UIMA components tags every occurrence of one of the words provided in a
+ * list. Can be used to tag semantically grouped words (e.g., temporal adverbs).
+ *
+ *
+ * @author reiterns
+ * @since 0.4.2
+ */
 public class WordListTagger extends JCasAnnotator_ImplBase {
 
 	public static final String RESOURCE_WORDLIST = "Word List";
@@ -99,6 +107,12 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 		}
 	}
 
+	/**
+	 * Represents the word list.
+	 * 
+	 * @author reiterns
+	 *
+	 */
 	public static class WordList implements SharedResourceObject, ExternalResourceAware {
 
 		@ConfigurationParameter(name = ExternalResourceFactory.PARAM_RESOURCE_NAME)
