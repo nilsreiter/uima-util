@@ -15,6 +15,7 @@ import org.apache.uima.resource.ResourceInitializationException;
  * PARAM_WINDOW_SIZE base annotations.
  *
  * @author reiterns
+ * @since 0.4.3
  *
  */
 public class WindowAnnotator extends JCasAnnotator_ImplBase {
