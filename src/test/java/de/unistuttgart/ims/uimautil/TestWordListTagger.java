@@ -1,6 +1,7 @@
 package de.unistuttgart.ims.uimautil;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.apache.uima.UIMAException;
@@ -40,7 +41,8 @@ public class TestWordListTagger {
 	@Test
 	public void testTagging() throws AnalysisEngineProcessException, ResourceInitializationException {
 		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
-				WordListTagger.WordList.class, getClass().getClassLoader().getResource("testwordlist.txt"));
+				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
+				getClass().getClassLoader().getResource("testwordlist.txt").toString());
 		SimplePipeline.runPipeline(jcas,
 				AnalysisEngineFactory.createEngineDescription(WordListTagger.class,
 						WordListTagger.PARAM_TARGET_ANNOTATION, TestType.class, WordListTagger.PARAM_BASE_ANNOTATION,
@@ -53,7 +55,8 @@ public class TestWordListTagger {
 	@Test
 	public void testPlainTagging() throws AnalysisEngineProcessException, ResourceInitializationException {
 		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
-				WordListTagger.WordList.class, getClass().getClassLoader().getResource("testwordlist.txt"));
+				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
+				getClass().getClassLoader().getResource("testwordlist.txt").toString());
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(WordListTagger.class,
 				WordListTagger.PARAM_TARGET_ANNOTATION, TestType.class, WordListTagger.RESOURCE_WORDLIST, erd));
 
@@ -83,7 +86,8 @@ public class TestWordListTagger {
 	@Test
 	public void testPlainTaggingCI() throws AnalysisEngineProcessException, ResourceInitializationException {
 		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
-				WordListTagger.WordList.class, getClass().getClassLoader().getResource("testwordlist.txt"));
+				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
+				getClass().getClassLoader().getResource("testwordlist.txt").toString());
 		SimplePipeline.runPipeline(jcas,
 				AnalysisEngineFactory.createEngineDescription(WordListTagger.class,
 						WordListTagger.PARAM_TARGET_ANNOTATION, TestType.class, WordListTagger.RESOURCE_WORDLIST, erd,
@@ -118,5 +122,22 @@ public class TestWordListTagger {
 		tt = JCasUtil.selectByIndex(jcas, TestType.class, index);
 		assertEquals("eu", tt.getCoveredText());
 
+	}
+
+	@Test
+	public void testTaggingWithFeature() throws AnalysisEngineProcessException, ResourceInitializationException {
+		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
+				getClass().getResource("/testwordlist.txt").toString(), WordListTagger.WordList.PARAM_LIST_NAME, "bla");
+		SimplePipeline.runPipeline(jcas,
+				AnalysisEngineFactory.createEngineDescription(WordListTagger.class,
+						WordListTagger.PARAM_TARGET_ANNOTATION, TestType.class, WordListTagger.PARAM_BASE_ANNOTATION,
+						Annotation.class.getCanonicalName(), WordListTagger.RESOURCE_WORDLIST, erd,
+						WordListTagger.PARAM_TARGET_FEATURE, "MyFeature"));
+		assertEquals(1, JCasUtil.select(jcas, TestType.class).size());
+		final TestType tt = JCasUtil.selectByIndex(jcas, TestType.class, 0);
+		assertEquals("dolor", tt.getCoveredText());
+		assertNotNull(tt.getMyFeature());
+		assertEquals("bla", tt.getMyFeature());
 	}
 }
