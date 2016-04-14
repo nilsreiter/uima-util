@@ -14,6 +14,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.unistuttgart.ims.uimautil.api.TestType;
@@ -31,6 +32,7 @@ public class TestWindowAnnotator {
 				+ "sint obcaecat cupiditat non proident, sunt in" + " culpa qui officia deserunt mollit anim id est "
 				+ "laborum.");
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(BreakIteratorSegmenter.class));
+		DocumentMetaData.create(jcas).setDocumentId("Lorem");
 	}
 
 	@Test
@@ -43,6 +45,22 @@ public class TestWindowAnnotator {
 		assertTrue(JCasUtil.exists(jcas, TestType.class));
 		assertEquals(8, JCasUtil.select(jcas, TestType.class).size());
 		for (int i = 0; i < 7; i++) {
+			final TestType tt = JCasUtil.selectByIndex(jcas, TestType.class, i);
+			assertEquals(10, JCasUtil.selectCovered(Token.class, tt).size());
+		}
+	}
+
+	@Test
+	public void testOverlappingWindowAnnotator()
+			throws AnalysisEngineProcessException, ResourceInitializationException {
+		SimplePipeline.runPipeline(jcas,
+				AnalysisEngineFactory.createEngineDescription(WindowAnnotator.class,
+						WindowAnnotator.PARAM_BASE_ANNOTATION, Token.class, WindowAnnotator.PARAM_TARGET_ANNOTATION,
+						TestType.class, WindowAnnotator.PARAM_WINDOW_SIZE, 10, WindowAnnotator.PARAM_OVERLAPS, true));
+
+		assertTrue(JCasUtil.exists(jcas, TestType.class));
+		assertEquals(65, JCasUtil.select(jcas, TestType.class).size());
+		for (int i = 0; i < 63; i++) {
 			final TestType tt = JCasUtil.selectByIndex(jcas, TestType.class, i);
 			assertEquals(10, JCasUtil.selectCovered(Token.class, tt).size());
 		}
