@@ -22,6 +22,7 @@ public class WindowAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_BASE_ANNOTATION = "Base Annotation";
 	public static final String PARAM_TARGET_ANNOTATION = "Target Annotation";
 	public static final String PARAM_WINDOW_SIZE = "Window Size";
+	public static final String PARAM_OVERLAPS = "Overlapping Windows";
 
 	@ConfigurationParameter(name = PARAM_BASE_ANNOTATION, mandatory = false)
 	String baseAnnotationClassName = null;
@@ -31,6 +32,9 @@ public class WindowAnnotator extends JCasAnnotator_ImplBase {
 
 	@ConfigurationParameter(name = PARAM_WINDOW_SIZE, mandatory = true)
 	int windowSize;
+
+	@ConfigurationParameter(name = PARAM_OVERLAPS, mandatory = false, defaultValue = "true")
+	boolean overlappingWindows = false;
 
 	Class<? extends Annotation> targetAnnotation = null;
 
