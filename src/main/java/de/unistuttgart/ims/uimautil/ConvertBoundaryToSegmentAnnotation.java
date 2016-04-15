@@ -14,12 +14,16 @@ public class ConvertBoundaryToSegmentAnnotation extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_SEGMENT_ANNOTATION_TYPE = "Segment Annotation Type";
 	public static final String PARAM_BOUNDARY_ANNOTATION_TYPE = "Boundary Annotation Type";
+	public static final String PARAM_BEGIN_END = "Add segments for the entire document";
 
 	@ConfigurationParameter(name = PARAM_SEGMENT_ANNOTATION_TYPE)
 	String segmentAnnotationTypeName;
 
 	@ConfigurationParameter(name = PARAM_BOUNDARY_ANNOTATION_TYPE)
 	String boundaryAnnotationTypeName;
+
+	@ConfigurationParameter(name = PARAM_BEGIN_END, mandatory = false)
+	boolean beginAndSegment = false;
 
 	Class<? extends Annotation> segmentAnnotationType;
 
@@ -51,11 +55,13 @@ public class ConvertBoundaryToSegmentAnnotation extends JCasAnnotator_ImplBase {
 		int i = 0;
 		int index = 0;
 		for (final Annotation anno : JCasUtil.select(jcas, boundaryAnnotationType)) {
-			if (index > 0)
+			if ((index > 0) || beginAndSegment)
 				AnnotationFactory.createAnnotation(jcas, i, anno.getBegin(), segmentAnnotationType);
 			i = anno.getBegin();
 			index++;
 		}
+		if (beginAndSegment)
+			AnnotationFactory.createAnnotation(jcas, i, jcas.getDocumentText().length(), segmentAnnotationType);
 	}
 
 }
