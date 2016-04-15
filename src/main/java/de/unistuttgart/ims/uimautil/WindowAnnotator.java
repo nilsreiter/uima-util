@@ -1,5 +1,6 @@
 package de.unistuttgart.ims.uimautil;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 import org.apache.uima.UimaContext;
@@ -29,12 +30,16 @@ public class WindowAnnotator extends JCasAnnotator_ImplBase {
 	public static final String PARAM_TARGET_ANNOTATION = "Target Annotation";
 	public static final String PARAM_WINDOW_SIZE = "Window Size";
 	public static final String PARAM_OVERLAPS = "Overlapping Windows";
+	public static final String PARAM_SEGMENT_ANNOTATION = "Segment Annotation";
 
 	@ConfigurationParameter(name = PARAM_BASE_ANNOTATION, mandatory = false)
 	String baseAnnotationClassName = null;
 
 	@ConfigurationParameter(name = PARAM_TARGET_ANNOTATION, mandatory = true)
 	String targetAnnotationClassName = null;
+
+	@ConfigurationParameter(name = PARAM_SEGMENT_ANNOTATION, mandatory = false)
+	String segmentAnnotationClassName = null;
 
 	@ConfigurationParameter(name = PARAM_WINDOW_SIZE, mandatory = true)
 	int windowSize;
@@ -45,6 +50,8 @@ public class WindowAnnotator extends JCasAnnotator_ImplBase {
 	Class<? extends Annotation> targetAnnotation = null;
 
 	Class<? extends Annotation> baseAnnotation = null;
+
+	Class<? extends Annotation> segmentAnnotationClass = null;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -73,17 +80,41 @@ public class WindowAnnotator extends JCasAnnotator_ImplBase {
 		} catch (final ClassNotFoundException e1) {
 			throw new ResourceInitializationException(e1);
 		}
+
+		try {
+			if (segmentAnnotationClassName != null) {
+				tA = Class.forName(segmentAnnotationClassName);
+				if (Annotation.class.isAssignableFrom(tA))
+					segmentAnnotationClass = (Class<? extends Annotation>) tA;
+				else
+					throw new ResourceInitializationException();
+			}
+		} catch (final ClassNotFoundException e1) {
+			throw new ResourceInitializationException(e1);
+		}
 	}
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+		if (segmentAnnotationClass != null) {
+			for (final Annotation segAnno : JCasUtil.select(jcas, segmentAnnotationClass)) {
+				doAnnotations(jcas, JCasUtil.selectCovered(jcas, baseAnnotation, segAnno), segAnno.getEnd());
+
+			}
+		} else {
+			doAnnotations(jcas, JCasUtil.select(jcas, baseAnnotation), jcas.getDocumentText().length());
+		}
+	}
+
+	protected void doAnnotations(JCas jcas, Collection<? extends Annotation> baseAnnotations, int end) {
 		int i = 0;
 		int b = 0;
+
 		LinkedList<Annotation> window = null;
 		if (overlappingWindows) {
 			window = new LinkedList<Annotation>();
 		}
-		for (final Annotation anno : JCasUtil.select(jcas, baseAnnotation)) {
+		for (final Annotation anno : baseAnnotations) {
 			if (overlappingWindows) {
 				window.add(anno);
 				if (window.size() >= windowSize) {
@@ -101,7 +132,8 @@ public class WindowAnnotator extends JCasAnnotator_ImplBase {
 			}
 		}
 		if (!overlappingWindows)
-			AnnotationFactory.createAnnotation(jcas, b, jcas.getDocumentText().length(), targetAnnotation);
+			AnnotationFactory.createAnnotation(jcas, b, end, targetAnnotation);
+
 	}
 
 }
