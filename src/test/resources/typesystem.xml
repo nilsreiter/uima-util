@@ -17,5 +17,10 @@
         </featureDescription>
       </features>
     </typeDescription>
+    <typeDescription>
+    	<name>de.unistuttgart.ims.uimautil.api.TestSegment</name>
+    	<description />
+		<supertypeName>uima.tcas.Annotation</supertypeName>
+    </typeDescription>
   </types>
 </typeSystemDescription>
