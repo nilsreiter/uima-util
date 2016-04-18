@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
+import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.fit.util.JCasUtil;
@@ -14,8 +15,10 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
+import de.unistuttgart.ims.uimautil.api.TestSegment;
 import de.unistuttgart.ims.uimautil.api.TestType;
 
 public class TestWindowAnnotator {
@@ -31,6 +34,7 @@ public class TestWindowAnnotator {
 				+ "sint obcaecat cupiditat non proident, sunt in" + " culpa qui officia deserunt mollit anim id est "
 				+ "laborum.");
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(BreakIteratorSegmenter.class));
+		DocumentMetaData.create(jcas).setDocumentId("Lorem");
 	}
 
 	@Test
@@ -46,5 +50,35 @@ public class TestWindowAnnotator {
 			final TestType tt = JCasUtil.selectByIndex(jcas, TestType.class, i);
 			assertEquals(10, JCasUtil.selectCovered(Token.class, tt).size());
 		}
+	}
+
+	@Test
+	public void testOverlappingWindowAnnotator()
+			throws AnalysisEngineProcessException, ResourceInitializationException {
+		SimplePipeline.runPipeline(jcas,
+				AnalysisEngineFactory.createEngineDescription(WindowAnnotator.class,
+						WindowAnnotator.PARAM_BASE_ANNOTATION, Token.class, WindowAnnotator.PARAM_TARGET_ANNOTATION,
+						TestType.class, WindowAnnotator.PARAM_WINDOW_SIZE, 10, WindowAnnotator.PARAM_OVERLAPS, true));
+
+		assertTrue(JCasUtil.exists(jcas, TestType.class));
+		assertEquals(65, JCasUtil.select(jcas, TestType.class).size());
+		for (int i = 0; i < 63; i++) {
+			final TestType tt = JCasUtil.selectByIndex(jcas, TestType.class, i);
+			assertEquals(10, JCasUtil.selectCovered(Token.class, tt).size());
+		}
+	}
+
+	@Test
+	public void testSegmentedWindowAnnotator() throws AnalysisEngineProcessException, ResourceInitializationException {
+		AnnotationFactory.createAnnotation(jcas, 0, 100, TestSegment.class);
+		AnnotationFactory.createAnnotation(jcas, 100, 200, TestSegment.class);
+		SimplePipeline.runPipeline(jcas,
+				AnalysisEngineFactory.createEngineDescription(WindowAnnotator.class,
+						WindowAnnotator.PARAM_BASE_ANNOTATION, Token.class, WindowAnnotator.PARAM_TARGET_ANNOTATION,
+						TestType.class, WindowAnnotator.PARAM_WINDOW_SIZE, 10, WindowAnnotator.PARAM_SEGMENT_ANNOTATION,
+						TestSegment.class));
+		assertTrue(JCasUtil.exists(jcas, TestType.class));
+		assertEquals(4, JCasUtil.select(jcas, TestType.class).size());
+
 	}
 }
