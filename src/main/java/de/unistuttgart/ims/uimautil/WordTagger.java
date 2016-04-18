@@ -17,6 +17,7 @@ import org.apache.uima.resource.ResourceInitializationException;
  * This UIMA components tags every occurrence of one of the words provided in a
  * list. Can be used to tag semantically grouped words (e.g., temporal adverbs).
  *
+ * This can probably replaced by UIMA regex annotator
  *
  * @author reiterns
  * @since 0.4.2
@@ -87,7 +88,7 @@ public class WordTagger extends JCasAnnotator_ImplBase {
 
 		} else {
 
-			final Pattern pattern = Pattern.compile("\\b" + word + "\\b",
+			final Pattern pattern = Pattern.compile(word,
 					Pattern.UNICODE_CASE | (caseIndependent ? Pattern.CASE_INSENSITIVE : 0));
 			final Matcher matcher = pattern.matcher(jcas.getDocumentText());
 			while (matcher.find()) {
