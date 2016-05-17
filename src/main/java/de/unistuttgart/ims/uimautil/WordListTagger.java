@@ -98,6 +98,9 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+		WordListDescription desc = AnnotationFactory.createAnnotation(jcas, 0, 0, WordListDescription.class);
+		desc.setLength(wordList.getLength(caseIndependent));
+		desc.setName(wordList.listName);
 		Feature feature = null;
 		if (targetFeatureName != null)
 			feature = jcas.getTypeSystem().getType(targetAnnotationClassName).getFeatureByBaseName(targetFeatureName);
@@ -196,6 +199,13 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 		@Override
 		public void afterResourcesInitialized() throws ResourceInitializationException {
 
+		}
+
+		public int getLength(boolean ci) {
+			if (ci)
+				return lowerWords.size();
+			else
+				return lowerWords.size();
 		}
 	}
 
