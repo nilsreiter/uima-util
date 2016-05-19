@@ -13,9 +13,14 @@
         <featureDescription>
           <name>MyFeature</name>
           <description/>
-          <rangeTypeName>uima.cas.Integer</rangeTypeName>
+          <rangeTypeName>uima.cas.String</rangeTypeName>
         </featureDescription>
       </features>
+    </typeDescription>
+    <typeDescription>
+    	<name>de.unistuttgart.ims.uimautil.api.TestSegment</name>
+    	<description />
+		<supertypeName>uima.tcas.Annotation</supertypeName>
     </typeDescription>
   </types>
 </typeSystemDescription>
