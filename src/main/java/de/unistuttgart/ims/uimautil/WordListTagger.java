@@ -25,6 +25,8 @@ import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
+
 /**
  * This UIMA components tags every occurrence of one of the words provided in a
  * list. Can be used to tag semantically grouped words (e.g., temporal adverbs).
@@ -40,6 +42,7 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 	public static final String PARAM_TARGET_ANNOTATION = "Target Annotation";
 	public static final String PARAM_TARGET_FEATURE = "Target Feature";
 	public static final String PARAM_CI = "Casing";
+	public static final String PARAM_LEMMA = "Lemma";
 
 	@ExternalResource(key = RESOURCE_WORDLIST, mandatory = true)
 	WordList wordList;
@@ -55,6 +58,9 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 
 	@ConfigurationParameter(name = PARAM_CI, mandatory = false, defaultValue = "false")
 	boolean caseIndependent = false;
+
+	@ConfigurationParameter(name = PARAM_LEMMA, mandatory = false, defaultValue = "false")
+	boolean listContainsLemmas = false;
 
 	Class<? extends Annotation> targetAnnotation = null;
 
@@ -92,13 +98,26 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+		WordListDescription desc = AnnotationFactory.createAnnotation(jcas, 0, 0, WordListDescription.class);
+		desc.setLength(wordList.getLength(caseIndependent));
+		desc.setName(wordList.listName);
 		Feature feature = null;
 		if (targetFeatureName != null)
 			feature = jcas.getTypeSystem().getType(targetAnnotationClassName).getFeatureByBaseName(targetFeatureName);
 		if (baseAnnotation != null) {
 
 			for (final Annotation anno : JCasUtil.select(jcas, baseAnnotation)) {
-				if (wordList.contains(anno.getCoveredText(), caseIndependent)) {
+				String s;
+				if (listContainsLemmas) {
+					try {
+						s = JCasUtil.selectCovered(Lemma.class, anno).get(0).getCoveredText();
+					} catch (Exception e) {
+						s = anno.getCoveredText();
+					}
+				} else {
+					s = anno.getCoveredText();
+				}
+				if (wordList.contains(s, caseIndependent)) {
 					final Annotation newAnno = AnnotationFactory.createAnnotation(jcas, anno.getBegin(), anno.getEnd(),
 							targetAnnotation);
 					if (feature != null)
@@ -180,6 +199,13 @@ public class WordListTagger extends JCasAnnotator_ImplBase {
 		@Override
 		public void afterResourcesInitialized() throws ResourceInitializationException {
 
+		}
+
+		public int getLength(boolean ci) {
+			if (ci)
+				return lowerWords.size();
+			else
+				return lowerWords.size();
 		}
 	}
 

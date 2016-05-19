@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unistuttgart.ims</groupId>
 	<artifactId>uimautil</artifactId>
-	<version>0.4.4</version>
+	<version>0.4.5</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/nilsreiter/uima-util</url>
@@ -74,7 +74,6 @@
     		de.tudarmstadt.ukp.dkpro.core.api.segmentation-asl
     	</artifactId>
 			<version>1.7.0</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
@@ -90,6 +89,11 @@
 			</artifactId>
 			<version>1.7.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.1.1</version>
 		</dependency>
 	</dependencies>
 	<issueManagement>
@@ -204,6 +208,31 @@
 							<!-- OPTIONAL -->
 							<limitToProject>true</limitToProject>
 							<outputDirectory>${project.build.directory}/test/java</outputDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>main</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>  <!-- this is the only goal -->
+						<!-- runs in phase process-resources by default -->
+						<configuration>
+
+							<!-- REQUIRED -->
+							<typeSystemIncludes>
+								<!-- one or more ant-like file patterns identifying top level descriptors -->
+								<typeSystemInclude>src/main/resources/de/unistuttgart/ims/uimautil/WordListDescription.xml</typeSystemInclude>
+							</typeSystemIncludes>
+
+							<!-- true or false, default = false -->
+							<!-- if true, then although the complete merged type system will be 
+								created internally, only those types whose definition is contained within 
+								this maven project will be generated. The others will be presumed to be available 
+								via other projects. -->
+							<!-- OPTIONAL -->
+							<limitToProject>true</limitToProject>
+							<outputDirectory>${project.build.directory}/main/java</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
