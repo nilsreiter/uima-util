@@ -32,13 +32,20 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 public class SetDocumentId extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_DOCUMENT_ID = "Document Id";
+	public static final String PARAM_DOCUMENT_TITLE = "Document Title";
 
-	@ConfigurationParameter(name = PARAM_DOCUMENT_ID)
-	String documentId;
+	@ConfigurationParameter(name = PARAM_DOCUMENT_ID, mandatory = false)
+	String documentId = null;
+
+	@ConfigurationParameter(name = PARAM_DOCUMENT_TITLE, mandatory = false)
+	String documentTitle = null;
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
-		DocumentMetaData.get(jcas).setDocumentId(documentId);
+		if (documentId != null)
+			DocumentMetaData.get(jcas).setDocumentId(documentId);
+		if (documentTitle != null)
+			DocumentMetaData.get(jcas).setDocumentTitle(documentTitle);
 	}
 
 }
