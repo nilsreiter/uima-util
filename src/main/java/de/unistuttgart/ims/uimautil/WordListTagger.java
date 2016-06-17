@@ -14,7 +14,6 @@ import org.apache.commons.io.IOUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.Feature;
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.component.Resource_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.descriptor.ExternalResource;
@@ -35,7 +34,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
  * @author reiterns
  * @since 0.4.2
  */
-public class WordListTagger extends JCasAnnotator_ImplBase {
+public class WordListTagger extends SimpleTagger {
 
 	public static final String RESOURCE_WORDLIST = "Word List";
 	public static final String PARAM_BASE_ANNOTATION = "Base Annotation";
