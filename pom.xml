@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unistuttgart.ims</groupId>
 	<artifactId>uimautil</artifactId>
-	<version>0.4.5</version>
+	<version>0.4.6</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/nilsreiter/uima-util</url>
@@ -187,6 +187,7 @@
 				<version>2.8.1</version>  <!-- change this to the latest version -->
 				<executions>
 					<execution>
+						<id>test</id>
 						<phase>generate-test-sources</phase>
 						<goals>
 							<goal>generate</goal>
