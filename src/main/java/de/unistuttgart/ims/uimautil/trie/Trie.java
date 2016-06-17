@@ -43,12 +43,16 @@ public class Trie<T> {
 		for (int i = 0; i < prefix.size(); i++) {
 			lastNode = lastNode.getNode(prefix.get(i));
 
-			// If no node matches, then no words exist, return empty list
-			if (lastNode == null)
-				return new ArrayList<List<T>>();
 		}
+		// If no node matches, then no words exist, return empty list
+		if (lastNode == null)
+			return new ArrayList<List<T>>();
 
 		// Return the words which eminate from the last node
-		return lastNode.getWords();
+		List<List<T>> r = lastNode.getWords();
+		for (List<T> l : r) {
+			l.addAll(0, prefix.subList(0, prefix.size() - 1));
+		}
+		return r;
 	}
 }
