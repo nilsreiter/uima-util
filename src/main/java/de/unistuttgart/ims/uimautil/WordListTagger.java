@@ -11,7 +11,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.fit.component.Resource_ImplBase;
@@ -39,36 +38,6 @@ public class WordListTagger extends SimpleTagger {
 	public static final String RESOURCE_WORDLIST = "Word List";
 	@ExternalResource(key = RESOURCE_WORDLIST, mandatory = true)
 	WordList wordList;
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public void initialize(UimaContext context) throws ResourceInitializationException {
-		super.initialize(context);
-
-		Class<?> tA;
-		try {
-			tA = Class.forName(targetAnnotationClassName);
-			if (Annotation.class.isAssignableFrom(tA))
-				targetAnnotation = (Class<? extends Annotation>) tA;
-			else
-				throw new ResourceInitializationException();
-		} catch (final ClassNotFoundException e1) {
-			throw new ResourceInitializationException(e1);
-		}
-
-		try {
-			if (baseAnnotationClassName != null) {
-				tA = Class.forName(baseAnnotationClassName);
-				if (Annotation.class.isAssignableFrom(tA))
-					baseAnnotation = (Class<? extends Annotation>) tA;
-				else
-					throw new ResourceInitializationException();
-			}
-		} catch (final ClassNotFoundException e1) {
-			throw new ResourceInitializationException(e1);
-		}
-
-	}
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
