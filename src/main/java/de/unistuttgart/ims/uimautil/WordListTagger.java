@@ -37,33 +37,8 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
 public class WordListTagger extends SimpleTagger {
 
 	public static final String RESOURCE_WORDLIST = "Word List";
-	public static final String PARAM_BASE_ANNOTATION = "Base Annotation";
-	public static final String PARAM_TARGET_ANNOTATION = "Target Annotation";
-	public static final String PARAM_TARGET_FEATURE = "Target Feature";
-	public static final String PARAM_CI = "Casing";
-	public static final String PARAM_LEMMA = "Lemma";
-
 	@ExternalResource(key = RESOURCE_WORDLIST, mandatory = true)
 	WordList wordList;
-
-	@ConfigurationParameter(name = PARAM_BASE_ANNOTATION, mandatory = false)
-	String baseAnnotationClassName = null;
-
-	@ConfigurationParameter(name = PARAM_TARGET_ANNOTATION, mandatory = true)
-	String targetAnnotationClassName = null;
-
-	@ConfigurationParameter(name = PARAM_TARGET_FEATURE, mandatory = false)
-	String targetFeatureName = null;
-
-	@ConfigurationParameter(name = PARAM_CI, mandatory = false, defaultValue = "false")
-	boolean caseIndependent = false;
-
-	@ConfigurationParameter(name = PARAM_LEMMA, mandatory = false, defaultValue = "false")
-	boolean listContainsLemmas = false;
-
-	Class<? extends Annotation> targetAnnotation = null;
-
-	Class<? extends Annotation> baseAnnotation = null;
 
 	@SuppressWarnings("unchecked")
 	@Override
