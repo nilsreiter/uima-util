@@ -20,6 +20,8 @@ public class TestTrie {
 		for (int i = 0; i < text.size(); i++)
 			trie.addWord(text.subList(i, text.size()));
 		System.out.println(trie.getWords(Arrays.asList("the")));
+		System.out.println(trie.getWords(Arrays.asList("the", "dog")));
+		System.out.println(trie.getWords(text));
 	}
 
 	@Test
