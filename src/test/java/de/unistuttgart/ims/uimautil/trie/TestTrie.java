@@ -21,4 +21,9 @@ public class TestTrie {
 			trie.addWord(text.subList(i, text.size()));
 		System.out.println(trie.getWords(Arrays.asList("the")));
 	}
+
+	@Test
+	public void testAnnotationTrie() {
+
+	}
 }

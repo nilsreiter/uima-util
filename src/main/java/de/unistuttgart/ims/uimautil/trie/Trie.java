@@ -1,6 +1,7 @@
 package de.unistuttgart.ims.uimautil.trie;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Trie<T> {
@@ -9,8 +10,15 @@ public class Trie<T> {
 	/**
 	 * Constructor
 	 */
+	public Trie(Comparator<T> cmp) {
+		root = new TrieNode<T>(cmp);
+	}
+
+	/**
+	 * Constructor
+	 */
 	public Trie() {
-		root = new TrieNode<T>();
+		root = new TrieNode<T>(null);
 	}
 
 	/**

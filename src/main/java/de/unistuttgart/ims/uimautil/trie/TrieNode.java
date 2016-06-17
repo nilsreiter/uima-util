@@ -1,6 +1,7 @@
 package de.unistuttgart.ims.uimautil.trie;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,21 +12,23 @@ public class TrieNode<T> {
 	private boolean isWord; // Does this node represent the last character
 							// of a word
 	private T character; // The character this node represents
+	Comparator<T> cmp;
 
 	/**
 	 * Constructor for top level root node.
 	 */
-	public TrieNode() {
+	public TrieNode(Comparator<T> comparator) {
 		children = new LinkedList<TrieNode<T>>();
 		isLeaf = true;
 		isWord = false;
+		cmp = comparator;
 	}
 
 	/**
 	 * Constructor for child node.
 	 */
-	public TrieNode(T character) {
-		this();
+	public TrieNode(Comparator<T> comparator, T character) {
+		this(comparator);
 		this.character = character;
 	}
 
@@ -43,7 +46,7 @@ public class TrieNode<T> {
 		TrieNode<T> node = getNode(word.get(0));
 
 		if (node == null) {
-			node = new TrieNode<T>(word.get(0));
+			node = new TrieNode<T>(cmp, word.get(0));
 			// node.parent = this;
 			children.add(node);
 		}
@@ -65,7 +68,10 @@ public class TrieNode<T> {
 	protected TrieNode<T> getNode(T c) {
 		for (int i = 0; i < children.size(); i++) {
 			TrieNode<T> ch = children.get(i);
-			if (ch.character.equals(c))
+			if (cmp != null) {
+				if (cmp.compare(ch.character, c) == 0)
+					return ch;
+			} else if (ch.character.equals(c))
 				return ch;
 		}
 		return null;
