@@ -5,10 +5,12 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -21,6 +23,7 @@ import org.apache.uima.fit.descriptor.ExternalResource;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
@@ -75,6 +78,14 @@ public class NGramTagger extends SimpleTagger {
 			}
 
 		}
+
+		Set<Annotation> toRemove = new HashSet<Annotation>();
+		for (Annotation a : JCasUtil.select(jcas, targetAnnotation)) {
+			toRemove.addAll(JCasUtil.selectCovered(targetAnnotation, a));
+		}
+
+		for (Annotation a : toRemove)
+			a.removeFromIndexes();
 	}
 
 	public static class NGramList extends Resource_ImplBase {
