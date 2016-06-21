@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unistuttgart.ims</groupId>
 	<artifactId>uimautil</artifactId>
-	<version>0.4.6</version>
+	<version>0.5.0</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/nilsreiter/uima-util</url>
@@ -94,6 +94,14 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-dbcp2</artifactId>
 			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
+			<artifactId>
+				de.tudarmstadt.ukp.dkpro.core.matetools-gpl
+			</artifactId>
+			<version>1.7.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<issueManagement>
