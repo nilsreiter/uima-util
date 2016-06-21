@@ -17,6 +17,7 @@ import java.util.TreeSet;
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.fit.component.Resource_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.descriptor.ExternalResource;
@@ -43,6 +44,14 @@ public class NGramTagger extends SimpleTagger {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+		WordListDescription desc = AnnotationFactory.createAnnotation(jcas, 0, 0, WordListDescription.class);
+		desc.setLength(wordList.getLength(caseIndependent));
+		desc.setName(wordList.listName);
+
+		Feature feature = null;
+		if (targetFeatureName != null)
+			feature = jcas.getTypeSystem().getType(targetAnnotationClassName).getFeatureByBaseName(targetFeatureName);
+
 		Iterator<Lemma> iterator = JCasUtil.iterator(jcas, Lemma.class);
 		Trie<String> trie = wordList.getTrie();
 		List<List<String>> potentials = new LinkedList<List<String>>();
@@ -66,7 +75,10 @@ public class NGramTagger extends SimpleTagger {
 				if (pot.get(0).equals(lemma)) {
 					pot.remove(0);
 					if (pot.isEmpty()) {
-						AnnotationFactory.createAnnotation(jcas, starts.get(i), current.getEnd(), targetAnnotation);
+						final Annotation newAnno = AnnotationFactory.createAnnotation(jcas, starts.get(i),
+								current.getEnd(), targetAnnotation);
+						if (feature != null)
+							newAnno.setFeatureValueFromString(feature, wordList.listName);
 						remove.add(i);
 					}
 				} else {
