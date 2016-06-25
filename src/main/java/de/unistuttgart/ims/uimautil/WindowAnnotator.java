@@ -5,7 +5,6 @@ import java.util.LinkedList;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
-import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.util.JCasUtil;
@@ -25,7 +24,7 @@ import org.apache.uima.resource.ResourceInitializationException;
  * @since 0.4.3
  *
  */
-public class WindowAnnotator extends JCasAnnotator_ImplBase {
+public class WindowAnnotator extends AbstractWindowAnnotator {
 	public static final String PARAM_BASE_ANNOTATION = "Base Annotation";
 	public static final String PARAM_TARGET_ANNOTATION = "Target Annotation";
 	public static final String PARAM_WINDOW_SIZE = "Window Size";
