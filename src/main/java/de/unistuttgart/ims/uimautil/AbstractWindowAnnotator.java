@@ -21,6 +21,7 @@ public abstract class AbstractWindowAnnotator extends JCasAnnotator_ImplBase {
 
 	protected Class<? extends Annotation> baseAnnotation = null;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
