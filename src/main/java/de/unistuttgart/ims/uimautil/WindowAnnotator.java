@@ -25,17 +25,9 @@ import org.apache.uima.resource.ResourceInitializationException;
  *
  */
 public class WindowAnnotator extends AbstractWindowAnnotator {
-	public static final String PARAM_BASE_ANNOTATION = "Base Annotation";
-	public static final String PARAM_TARGET_ANNOTATION = "Target Annotation";
 	public static final String PARAM_WINDOW_SIZE = "Window Size";
 	public static final String PARAM_OVERLAPS = "Overlapping Windows";
 	public static final String PARAM_SEGMENT_ANNOTATION = "Segment Annotation";
-
-	@ConfigurationParameter(name = PARAM_BASE_ANNOTATION, mandatory = false)
-	String baseAnnotationClassName = null;
-
-	@ConfigurationParameter(name = PARAM_TARGET_ANNOTATION, mandatory = true)
-	String targetAnnotationClassName = null;
 
 	@ConfigurationParameter(name = PARAM_SEGMENT_ANNOTATION, mandatory = false)
 	String segmentAnnotationClassName = null;
@@ -46,10 +38,6 @@ public class WindowAnnotator extends AbstractWindowAnnotator {
 	@ConfigurationParameter(name = PARAM_OVERLAPS, mandatory = false, defaultValue = "false")
 	boolean overlappingWindows = false;
 
-	Class<? extends Annotation> targetAnnotation = null;
-
-	Class<? extends Annotation> baseAnnotation = null;
-
 	Class<? extends Annotation> segmentAnnotationClass = null;
 
 	@SuppressWarnings("unchecked")
@@ -57,28 +45,6 @@ public class WindowAnnotator extends AbstractWindowAnnotator {
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		Class<?> tA;
-
-		try {
-			tA = Class.forName(targetAnnotationClassName);
-			if (Annotation.class.isAssignableFrom(tA))
-				targetAnnotation = (Class<? extends Annotation>) tA;
-			else
-				throw new ResourceInitializationException();
-		} catch (final ClassNotFoundException e1) {
-			throw new ResourceInitializationException(e1);
-		}
-
-		try {
-			if (baseAnnotationClassName != null) {
-				tA = Class.forName(baseAnnotationClassName);
-				if (Annotation.class.isAssignableFrom(tA))
-					baseAnnotation = (Class<? extends Annotation>) tA;
-				else
-					throw new ResourceInitializationException();
-			}
-		} catch (final ClassNotFoundException e1) {
-			throw new ResourceInitializationException(e1);
-		}
 
 		try {
 			if (segmentAnnotationClassName != null) {
