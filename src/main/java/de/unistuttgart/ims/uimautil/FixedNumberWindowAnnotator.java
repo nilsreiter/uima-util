@@ -23,10 +23,12 @@ public class FixedNumberWindowAnnotator extends AbstractWindowAnnotator {
 		double avgLength = (double) n / (double) numberOfWindows;
 		int c = (int) Math.ceil(avgLength);
 		int last = 0;
+		int windows = 0;
 		for (int i = 0; i < n; i++) {
-			if (i % c == 0) {
-				AnnotationFactory.createAnnotation(jcas, bases.get(last).getBegin(), bases.get(i).getEnd(),
+			if (i % c == 0 && windows < numberOfWindows - 1) {
+				AnnotationFactory.createAnnotation(jcas, bases.get(last + 1).getBegin(), bases.get(i).getEnd(),
 						targetAnnotation);
+				windows++;
 				last = i;
 			}
 		}
