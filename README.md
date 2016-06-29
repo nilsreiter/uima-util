@@ -14,7 +14,7 @@ add uima-util as a dependency to your pom.xml file with the following:
 <dependency>
   <groupId>de.unistuttgart.ims</groupId>
   <artifactId>uima-util</artifactId>
-  <version>0.4.4</version>
+  <version>0.6.0</version>
 </dependency>
 ```
 
@@ -28,7 +28,7 @@ add uima-util as a dependency to your pom.xml file with the following:
 - `WordTagger`: Tag all occurrences of a single string
 - `ConvertBoundaryToSegmentAnnotation`: Converts boundary annotation to segment annotation
 - `ConvertSegmentToBoundaryAnnotation`: Vice versa
-- `AnnotationUtil` 
+- `AnnotationUtil`
     - `trim()`: Various methods to trim annotations (removing whitespace at the front and end).
 
 ## Documentation
