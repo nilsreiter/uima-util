@@ -5,14 +5,12 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.uima.UimaContext;
@@ -52,43 +50,35 @@ public class NGramTagger extends SimpleTagger {
 		if (targetFeatureName != null)
 			feature = jcas.getTypeSystem().getType(targetAnnotationClassName).getFeatureByBaseName(targetFeatureName);
 
-		Iterator<Lemma> iterator = JCasUtil.iterator(jcas, Lemma.class);
-		Trie<String> trie = wordList.getTrie();
-		List<List<String>> potentials = new LinkedList<List<String>>();
-		List<Integer> starts = new LinkedList<Integer>();
-		while (iterator.hasNext()) {
-			Lemma current = iterator.next();
-			String lemma = current.getValue();
-			List<List<String>> l = trie.getWords(Arrays.asList(lemma));
-			if (l != null) {
-				potentials.addAll(l);
-				for (int i = 0; i < l.size(); i++) {
-					starts.add(current.getBegin());
-				}
-			}
+		// create lemma index
+		Map<String, List<Lemma>> lemmaIndex = new HashMap<String, List<Lemma>>();
+		for (Lemma lemma : JCasUtil.select(jcas, Lemma.class)) {
+			if (!lemmaIndex.containsKey(lemma.getValue()))
+				lemmaIndex.put(lemma.getValue(), new LinkedList<Lemma>());
+			lemmaIndex.get(lemma.getValue()).add(lemma);
+		}
 
-			SortedSet<Integer> remove = new TreeSet<Integer>();
-			for (int i = 0; i < potentials.size(); i++) {
-				List<String> pot = potentials.get(i);
-				if (pot == null)
-					continue;
-				if (pot.get(0).equals(lemma)) {
-					pot.remove(0);
-					if (pot.isEmpty()) {
-						final Annotation newAnno = AnnotationFactory.createAnnotation(jcas, starts.get(i),
-								current.getEnd(), targetAnnotation);
+		for (String[] entry : wordList.getEntries()) {
+			if (lemmaIndex.containsKey(entry[0])) {
+				for (Lemma lemma : lemmaIndex.get(entry[0])) {
+					int begin = lemma.getBegin();
+					int end = lemma.getEnd();
+					Lemma nextLemma;
+					for (int i = 1; i < entry.length; i++) {
+						nextLemma = JCasUtil.selectFollowing(Lemma.class, lemma, 1).get(0);
+						if (nextLemma.getValue().equalsIgnoreCase(entry[i])) {
+							end = nextLemma.getEnd();
+						} else {
+							end = -1;
+						}
+					}
+					if (end >= 0) {
+						Annotation newAnno = AnnotationFactory.createAnnotation(jcas, begin, end, targetAnnotation);
 						if (feature != null)
 							newAnno.setFeatureValueFromString(feature, wordList.listName);
-						remove.add(i);
 					}
-				} else {
-					remove.add(i);
 				}
 			}
-			for (Integer r : remove) {
-				potentials.set(r, null);
-			}
-
 		}
 
 		Set<Annotation> toRemove = new HashSet<Annotation>();
@@ -130,11 +120,20 @@ public class NGramTagger extends SimpleTagger {
 		}
 
 		Trie<String> ngrams = new Trie<String>();
+		List<String[]> entries = new LinkedList<String[]>();
+
+		public List<String[]> getEntries() {
+			return entries;
+		}
+
 		int lines = 0;
 
 		public void loadFromStream(InputStream is) throws IOException {
 			for (String line : IOUtils.readLines(is, "UTF-8")) {
 				ngrams.addWord(Arrays.asList(line.split("[ \t]")));
+
+				entries.add(line.split("[ \t]"));
+
 				lines++;
 			}
 
