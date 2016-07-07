@@ -119,6 +119,7 @@ public class NGramTagger extends SimpleTagger {
 			return true;
 		}
 
+		@Deprecated
 		Trie<String> ngrams = new Trie<String>();
 		List<String[]> entries = new LinkedList<String[]>();
 
@@ -144,6 +145,7 @@ public class NGramTagger extends SimpleTagger {
 
 		}
 
+		@Deprecated
 		public Trie<String> getTrie() {
 			return ngrams;
 		}

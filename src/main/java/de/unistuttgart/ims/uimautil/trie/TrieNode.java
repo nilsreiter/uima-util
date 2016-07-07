@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+@Deprecated
 public class TrieNode<T> {
 	// private TrieNode<T> parent;
 	private List<TrieNode<T>> children;
