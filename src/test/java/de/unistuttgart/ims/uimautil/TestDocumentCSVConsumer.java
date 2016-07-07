@@ -27,9 +27,8 @@ public class TestDocumentCSVConsumer {
 
 	@Test
 	public void testDocumentCSVConsumer() throws AnalysisEngineProcessException, ResourceInitializationException {
-		SimplePipeline.runPipeline(jcas,
-				AnalysisEngineFactory.createEngineDescription(DocumentCSVConsumer.class,
-						DocumentCSVConsumer.PARAM_ANNOTATION_TYPE, TestType.class,
-						DocumentCSVConsumer.PARAM_LAST_FEATURE, "MyFeature"));
+		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(DocumentCSVConsumer.class,
+				DocumentCSVConsumer.PARAM_ANNOTATION_TYPE, TestType.class, DocumentCSVConsumer.PARAM_LAST_FEATURE,
+				"MyFeature", DocumentCSVConsumer.PARAM_TARGET_LOCATION, "target"));
 	}
 }
