@@ -14,7 +14,7 @@ add uima-util as a dependency to your pom.xml file with the following:
 <dependency>
   <groupId>de.unistuttgart.ims</groupId>
   <artifactId>uima-util</artifactId>
-  <version>0.6.0</version>
+  <version>0.6.2</version>
 </dependency>
 ```
 
