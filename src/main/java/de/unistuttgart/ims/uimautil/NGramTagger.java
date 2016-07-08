@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -27,7 +26,6 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.ResourceSpecifier;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
-import de.unistuttgart.ims.uimautil.trie.Trie;
 
 public class NGramTagger extends SimpleTagger {
 	public static final String RESOURCE_WORDLIST = "N-Gram List";
@@ -53,20 +51,21 @@ public class NGramTagger extends SimpleTagger {
 		// create lemma index
 		Map<String, List<Lemma>> lemmaIndex = new HashMap<String, List<Lemma>>();
 		for (Lemma lemma : JCasUtil.select(jcas, Lemma.class)) {
-			if (!lemmaIndex.containsKey(lemma.getValue()))
-				lemmaIndex.put(lemma.getValue(), new LinkedList<Lemma>());
-			lemmaIndex.get(lemma.getValue()).add(lemma);
+			String indexEntry = lemma.getValue().toLowerCase();
+			if (!lemmaIndex.containsKey(indexEntry))
+				lemmaIndex.put(indexEntry, new LinkedList<Lemma>());
+			lemmaIndex.get(indexEntry).add(lemma);
 		}
 
 		for (String[] entry : wordList.getEntries()) {
-			if (lemmaIndex.containsKey(entry[0])) {
-				for (Lemma lemma : lemmaIndex.get(entry[0])) {
+			if (lemmaIndex.containsKey(entry[0].toLowerCase())) {
+				for (Lemma lemma : lemmaIndex.get(entry[0].toLowerCase())) {
 					int begin = lemma.getBegin();
 					int end = lemma.getEnd();
 					Lemma nextLemma;
 					for (int i = 1; i < entry.length; i++) {
 						nextLemma = JCasUtil.selectFollowing(Lemma.class, lemma, 1).get(0);
-						if (nextLemma.getValue().equalsIgnoreCase(entry[i])) {
+						if (nextLemma.getValue().equalsIgnoreCase(entry[i].toLowerCase())) {
 							end = nextLemma.getEnd();
 						} else {
 							end = -1;
@@ -119,8 +118,6 @@ public class NGramTagger extends SimpleTagger {
 			return true;
 		}
 
-		@Deprecated
-		Trie<String> ngrams = new Trie<String>();
 		List<String[]> entries = new LinkedList<String[]>();
 
 		public List<String[]> getEntries() {
@@ -131,7 +128,6 @@ public class NGramTagger extends SimpleTagger {
 
 		public void loadFromStream(InputStream is) throws IOException {
 			for (String line : IOUtils.readLines(is, "UTF-8")) {
-				ngrams.addWord(Arrays.asList(line.split("[ \t]")));
 
 				entries.add(line.split("[ \t]"));
 
@@ -143,11 +139,6 @@ public class NGramTagger extends SimpleTagger {
 		@Override
 		public void afterResourcesInitialized() throws ResourceInitializationException {
 
-		}
-
-		@Deprecated
-		public Trie<String> getTrie() {
-			return ngrams;
 		}
 
 		public int getLength(boolean ci) {
