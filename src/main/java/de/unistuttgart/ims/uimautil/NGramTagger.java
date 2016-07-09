@@ -40,6 +40,7 @@ public class NGramTagger extends SimpleTagger {
 
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
+		long startTimestamp = System.currentTimeMillis();
 		WordListDescription desc = AnnotationFactory.createAnnotation(jcas, 0, 0, WordListDescription.class);
 		desc.setLength(wordList.getLength(caseIndependent));
 		desc.setName(wordList.listName);
@@ -87,6 +88,14 @@ public class NGramTagger extends SimpleTagger {
 
 		for (Annotation a : toRemove)
 			a.removeFromIndexes();
+
+		long duration = System.currentTimeMillis() - startTimestamp;
+		getLogger().info("NGramTagger took " + duration + "ms.");
+
+		/*
+		 * base version: 1681ms
+		 */
+
 	}
 
 	public static class NGramList extends Resource_ImplBase {
