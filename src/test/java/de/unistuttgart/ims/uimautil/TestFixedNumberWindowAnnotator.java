@@ -51,10 +51,13 @@ public class TestFixedNumberWindowAnnotator {
 		TestType tt;
 
 		tt = JCasUtil.selectByIndex(jcas, TestType.class, 0);
+		assertEquals(9, JCasUtil.selectCovered(Token.class, tt).size());
+
+		tt = JCasUtil.selectByIndex(jcas, TestType.class, 1);
 		assertEquals(8, JCasUtil.selectCovered(Token.class, tt).size());
 
 		tt = JCasUtil.selectByIndex(jcas, TestType.class, 9);
-		assertEquals(10, JCasUtil.selectCovered(Token.class, tt).size());
+		assertEquals(2, JCasUtil.selectCovered(Token.class, tt).size());
 
 	}
 }
