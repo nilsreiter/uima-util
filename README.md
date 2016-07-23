@@ -14,7 +14,7 @@ add uima-util as a dependency to your pom.xml file with the following:
 <dependency>
   <groupId>de.unistuttgart.ims</groupId>
   <artifactId>uima-util</artifactId>
-  <version>0.6.2</version>
+  <version>0.6.3</version>
 </dependency>
 ```
 
@@ -26,10 +26,13 @@ add uima-util as a dependency to your pom.xml file with the following:
 - `WindowAnnotator`: Adds an annotation over `n` base annotations (e.g., tokens)
 - `WordListTagger`: Tags all occurrences of words provided in a list
 - `WordTagger`: Tag all occurrences of a single string
+- `NGramTagger`: Tags all occurrences of a list of n-grams
 - `ConvertBoundaryToSegmentAnnotation`: Converts boundary annotation to segment annotation
 - `ConvertSegmentToBoundaryAnnotation`: Vice versa
 - `AnnotationUtil`
     - `trim()`: Various methods to trim annotations (removing whitespace at the front and end).
+- `WindowAnnotator`: Creates arbitrary annotations in UIMA documents, based on the length (measured in arbitrary annotation types) of the windows.
+- `FixedNumberWindowAnnotator`: Creates arbitrary annotations, distributed uniformly over all base annotations (type can be specified)
 
 ## Documentation
 - [javadoc](http://nilsreiter.github.io/uima-util/)
