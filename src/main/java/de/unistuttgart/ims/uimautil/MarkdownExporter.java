@@ -23,6 +23,7 @@ public class MarkdownExporter extends JCasFileWriter_ImplBase {
 	public static final String PARAM_FEATURE = "Feature to subscript";
 	public static final String PARAM_BEGIN_MARK = "Begin Mark";
 	public static final String PARAM_END_MARK = "End Mark";
+	public static final String PARAM_DOUBLE_NEWLINE = "Double Newline";
 
 	@ConfigurationParameter(name = PARAM_TYPE)
 	String type = null;
@@ -36,6 +37,9 @@ public class MarkdownExporter extends JCasFileWriter_ImplBase {
 
 	@ConfigurationParameter(name = PARAM_END_MARK, mandatory = false, defaultValue = "]")
 	String endMark = "]";
+
+	@ConfigurationParameter(name = PARAM_DOUBLE_NEWLINE, mandatory = false, defaultValue = "false")
+	boolean doubleNewline = false;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -84,7 +88,11 @@ public class MarkdownExporter extends JCasFileWriter_ImplBase {
 		for (Insertion ins : insertions) {
 			exportString.insert(ins.position, ins.content);
 		}
-		return exportString.toString();
+
+		if (doubleNewline)
+			return exportString.toString().replaceAll("\n", "\n\n");
+		else
+			return exportString.toString().replaceAll("\n", "  \n");
 	}
 
 	static class Insertion implements Comparable<Insertion> {
@@ -99,7 +107,7 @@ public class MarkdownExporter extends JCasFileWriter_ImplBase {
 
 		public int compareTo(Insertion o) {
 			if (this.position == o.position)
-				return -String.CASE_INSENSITIVE_ORDER.compare(this.content, o.content);
+				return -1;
 			return -Integer.compare(this.position, o.position);
 		}
 
