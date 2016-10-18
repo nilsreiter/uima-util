@@ -1,11 +1,11 @@
 package de.unistuttgart.ims.uimautil;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -45,7 +45,7 @@ import de.unistuttgart.ims.uimautil.export.PrimitiveExportEntry;
 public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 
 	public static final String PARAM_OUTPUT_FILE = "Output File";
-	public static final String PARAM_CONFIGURATION_FILE = "Configuration File";
+	public static final String PARAM_CONFIGURATION_FILE = "Configuration URL";
 
 	public static final String PARAM_ANNOTATION_CLASS = "Annotation Class";
 	public static final String PARAM_FEATURE_PATHS = "Feature Paths";
@@ -59,7 +59,7 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 	String annotationClassName;
 
 	@ConfigurationParameter(name = PARAM_CONFIGURATION_FILE)
-	File configurationFile;
+	String configurationFile;
 
 	@ConfigurationParameter(name = PARAM_COVERED_ANNOTATION_CLASS, mandatory = false)
 	String coveredAnnotationClassName = null;
@@ -97,6 +97,7 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new ResourceInitializationException(e);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
@@ -104,11 +105,12 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 		try {
 			// reading additional properties in seperate file, as specified
 			// in the context
-
-			is = new FileInputStream(configurationFile);
+			URL url = new URL(configurationFile);
+			is = url.openStream();
 			serverConfig.read(new InputStreamReader(is, "UTF-8"));
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new ResourceInitializationException(e);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
