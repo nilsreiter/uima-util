@@ -2,13 +2,13 @@ package de.unistuttgart.ims.uimautil.export;
 
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class DramaIdExportEntry extends ExportEntry {
+public class ConstantStringExportEntry extends ExportEntry {
 
 	String dramaId;
 
-	public DramaIdExportEntry(String did) {
-		super(new String[] { "drama" });
-		dramaId = did;
+	public ConstantStringExportEntry(String label, String content) {
+		super(new String[] { label });
+		dramaId = content;
 
 	}
 
