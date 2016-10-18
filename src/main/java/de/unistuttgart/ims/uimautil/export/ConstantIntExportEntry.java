@@ -6,8 +6,8 @@ public class ConstantIntExportEntry extends ExportEntry {
 
 	int dramaLength;
 
-	public ConstantIntExportEntry(int l) {
-		super(new String[] { "length" });
+	public ConstantIntExportEntry(String label, int l) {
+		super(new String[] { label });
 		dramaLength = l;
 
 	}
