@@ -46,7 +46,7 @@ public class TestCoNLLStyleExporter {
 				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
 						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, Token.class, CoNLLStyleExporter.PARAM_OUTPUT_FILE,
 						"target/conll2.csv", CoNLLStyleExporter.PARAM_CONFIGURATION_FILE,
-						"src/test/resources/CoNLLExportConfig-1.ini"));
+						"file:src/test/resources/CoNLLExportConfig-1.ini"));
 	}
 
 	@Test
@@ -55,7 +55,7 @@ public class TestCoNLLStyleExporter {
 				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
 						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, TestSegment.class,
 						CoNLLStyleExporter.PARAM_OUTPUT_FILE, "target/conll3.csv",
-						CoNLLStyleExporter.PARAM_CONFIGURATION_FILE, "src/test/resources/CoNLLExportConfig-1.ini"));
+						CoNLLStyleExporter.PARAM_CONFIGURATION_FILE, "file:src/test/resources/CoNLLExportConfig-1.ini"));
 	}
 
 }
