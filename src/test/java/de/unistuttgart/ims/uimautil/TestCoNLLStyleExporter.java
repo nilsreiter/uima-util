@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.unistuttgart.ims.uimautil.api.TestSegment;
 
 public class TestCoNLLStyleExporter {
 	JCas jcas;
@@ -30,6 +31,7 @@ public class TestCoNLLStyleExporter {
 		poss[1].setPosValue("B");
 		tokens[0].setPos(poss[0]);
 		tokens[1].setPos(poss[1]);
+		AnnotationFactory.createAnnotation(jcas, 0, 20, TestSegment.class);
 
 	}
 
@@ -43,9 +45,17 @@ public class TestCoNLLStyleExporter {
 		SimplePipeline.runPipeline(jcas,
 				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
 						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, Token.class, CoNLLStyleExporter.PARAM_OUTPUT_FILE,
-						"target/conll2.csv", CoNLLStyleExporter.PARAM_FEATURE_PATHS,
-						new String[] { "/:coveredText()", "/pos/PosValue" }, CoNLLStyleExporter.PARAM_COLUMN_LABELS,
-						new String[] { "surface", "pos" }));
+						"target/conll2.csv", CoNLLStyleExporter.PARAM_CONFIGURATION_FILE,
+						"src/test/resources/CoNLLExportConfig-1.ini"));
+	}
+
+	@Test
+	public void testExporter3() throws AnalysisEngineProcessException, ResourceInitializationException {
+		SimplePipeline.runPipeline(jcas,
+				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
+						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, TestSegment.class,
+						CoNLLStyleExporter.PARAM_OUTPUT_FILE, "target/conll3.csv",
+						CoNLLStyleExporter.PARAM_CONFIGURATION_FILE, "src/test/resources/CoNLLExportConfig-1.ini"));
 	}
 
 }
