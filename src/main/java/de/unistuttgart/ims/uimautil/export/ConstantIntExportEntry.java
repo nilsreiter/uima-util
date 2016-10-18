@@ -2,11 +2,11 @@ package de.unistuttgart.ims.uimautil.export;
 
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class DramaLengthExportEntry extends ExportEntry {
+public class ConstantIntExportEntry extends ExportEntry {
 
 	int dramaLength;
 
-	public DramaLengthExportEntry(int l) {
+	public ConstantIntExportEntry(int l) {
 		super(new String[] { "length" });
 		dramaLength = l;
 
