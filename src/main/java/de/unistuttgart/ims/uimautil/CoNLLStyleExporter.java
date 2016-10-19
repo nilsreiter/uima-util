@@ -164,11 +164,14 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 		eelist = getExportEntries(jcas, type, coveredType);
 
 		String confKey = type.getName().replaceAll("\\.", "..") + ".fixed";
-		String confValue = config.getString(confKey, "");
-		for (String confEntry : confValue.split(",")) {
-			confEntry = confEntry.trim();
+		String[] confValues = config.getString(confKey, "").split(",");
+		String[] confValueLabels = config.getString(confKey + "_labels", "").split(",");
+
+		for (int i = 0; i < confValues.length; i++) {
+			String confEntry = confValues[i].trim();
+			String confEntryLabel = confValueLabels[i].trim();
 			if (confEntry.equalsIgnoreCase("DocumentId")) {
-				eelist.add(0, new ExportEntry(new String[] { confEntry }) {
+				eelist.add(0, new ExportEntry(new String[] { confEntryLabel }) {
 
 					@Override
 					public Object getValue(Annotation a) {
@@ -185,7 +188,7 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 					}
 				});
 			} else if (confEntry.equalsIgnoreCase("Length")) {
-				eelist.add(0, new ExportEntry(new String[] { confEntry }) {
+				eelist.add(0, new ExportEntry(new String[] { confEntryLabel }) {
 
 					@Override
 					public Object getValue(Annotation a) {
