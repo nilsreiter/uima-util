@@ -2,6 +2,7 @@ package de.unistuttgart.ims.uimautil.export;
 
 import org.apache.uima.jcas.tcas.Annotation;
 
+@Deprecated
 public class ConstantIntExportEntry extends ExportEntry {
 
 	int dramaLength;
