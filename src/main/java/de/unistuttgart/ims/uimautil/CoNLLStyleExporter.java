@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
 
+import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
+import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.export.CoveredExportEntry;
 import de.unistuttgart.ims.uimautil.export.ExportEntry;
 import de.unistuttgart.ims.uimautil.export.FeaturePathExportEntry;
@@ -71,6 +74,8 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 	Class<? extends Annotation> annotationClass;
 	Class<? extends Annotation> coveredAnnotationClass = null;
 	CombinedConfiguration config;
+
+	Type type;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -150,13 +155,57 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 		}
 
 		TypeDescription td = tsd.getType(annotationClass.getName());
-		Type type = jcas.getTypeSystem().getType(td.getName());
+		type = jcas.getTypeSystem().getType(td.getName());
 		Type coveredType = null;
 		if (coveredAnnotationClass != null) {
 			coveredType = jcas.getTypeSystem().getType(coveredAnnotationClass.getName());
 		}
 
 		eelist = getExportEntries(jcas, type, coveredType);
+
+		String confKey = type.getName().replaceAll("\\.", "..") + ".fixed";
+		String confValue = config.getString(confKey, "");
+		for (String confEntry : confValue.split(",")) {
+			confEntry = confEntry.trim();
+			if (confEntry.equalsIgnoreCase("DocumentId")) {
+				eelist.add(0, new ExportEntry(new String[] { confEntry }) {
+
+					@Override
+					public Object getValue(Annotation a) {
+						try {
+							return DocumentMetaData.get(a.getCAS()).getDocumentId();
+						} catch (Exception e) {
+							return "";
+						}
+					}
+
+					@Override
+					public boolean isMultiplying() {
+						return false;
+					}
+				});
+			} else if (confEntry.equalsIgnoreCase("Length")) {
+				eelist.add(0, new ExportEntry(new String[] { confEntry }) {
+
+					@Override
+					public Object getValue(Annotation a) {
+						try {
+							JCas jcas = a.getCAS().getJCas();
+							return JCasUtil.select(jcas, Token.class).size();
+						} catch (CASException e) {
+							e.printStackTrace();
+							return 0;
+						}
+
+					}
+
+					@Override
+					public boolean isMultiplying() {
+						return false;
+					}
+				});
+			}
+		}
 
 		// assemble the header
 		List<Object> header = new LinkedList<Object>();
@@ -182,7 +231,8 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 
 		// print entries
 		for (Annotation a : annotationList) {
-			for (List<Object> l : printFeatureValues(a, eelist)) {
+
+			for (List<Object> l : printFeatureValues(a, eelist.iterator())) {
 				try {
 					csvPrinter.printRecord(l);
 				} catch (IOException e) {
@@ -204,12 +254,12 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 		IOUtils.closeQuietly(csvPrinter);
 	}
 
-	private ArrayList<ArrayList<Object>> printFeatureValues(Annotation a, List<ExportEntry> eelist) {
+	private ArrayList<ArrayList<Object>> printFeatureValues(Annotation a, Iterator<ExportEntry> eelist) {
 		ArrayList<ArrayList<Object>> r = new ArrayList<ArrayList<Object>>();
 		r.add(new ArrayList<Object>());
 
-		for (int i = 0; i < eelist.size(); i++) {
-			ExportEntry ee = eelist.get(i);
+		while (eelist.hasNext()) {
+			ExportEntry ee = eelist.next();
 			Object value = ee.getValue(a);
 			if (ee.isMultiplying()) {
 				ArrayList<ArrayList<ArrayList<Object>>> clones = new ArrayList<ArrayList<ArrayList<Object>>>();
