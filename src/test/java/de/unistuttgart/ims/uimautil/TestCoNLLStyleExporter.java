@@ -1,5 +1,17 @@
 package de.unistuttgart.ims.uimautil;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
 import org.apache.uima.UIMAException;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
 import org.apache.uima.fit.factory.AnalysisEngineFactory;
@@ -41,21 +53,66 @@ public class TestCoNLLStyleExporter {
 	}
 
 	@Test
-	public void testExporter2() throws AnalysisEngineProcessException, ResourceInitializationException {
+	public void testExporter2()
+			throws AnalysisEngineProcessException, ResourceInitializationException, FileNotFoundException, IOException {
 		SimplePipeline.runPipeline(jcas,
 				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
 						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, Token.class, CoNLLStyleExporter.PARAM_OUTPUT_FILE,
 						"target/conll2.csv", CoNLLStyleExporter.PARAM_CONFIGURATION_FILE,
 						"file:src/test/resources/CoNLLExportConfig.ini"));
+
+		CSVParser csvp = new CSVParser(new FileReader("target/conll2.csv"), CSVFormat.DEFAULT.withHeader());
+		Iterator<CSVRecord> iter = csvp.iterator();
+		assertTrue(iter.hasNext());
+
+		CSVRecord rec = iter.next();
+		assertEquals("0", rec.get(0));
+		assertEquals("5", rec.get(1));
+		assertEquals("Lorem", rec.get(2));
+
+		rec = iter.next();
+		assertEquals("6", rec.get(0));
+		assertEquals("11", rec.get(1));
+		assertEquals("ipsum", rec.get(2));
+
+		assertFalse(iter.hasNext());
+		csvp.close();
 	}
 
 	@Test
-	public void testExporter3() throws AnalysisEngineProcessException, ResourceInitializationException {
+	public void testExporter3()
+			throws AnalysisEngineProcessException, ResourceInitializationException, FileNotFoundException, IOException {
 		SimplePipeline.runPipeline(jcas,
 				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
 						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, TestSegment.class,
 						CoNLLStyleExporter.PARAM_OUTPUT_FILE, "target/conll3.csv",
-						CoNLLStyleExporter.PARAM_CONFIGURATION_FILE, "file:src/test/resources/CoNLLExportConfig.ini"));
+						CoNLLStyleExporter.PARAM_CONFIGURATION_FILE, "file:src/test/resources/CoNLLExportConfig2.ini"));
+
+		CSVParser csvp = new CSVParser(new FileReader("target/conll3.csv"), CSVFormat.DEFAULT.withHeader());
+		Iterator<CSVRecord> iter = csvp.iterator();
+		assertTrue(iter.hasNext());
+
+		CSVRecord rec = iter.next();
+		assertEquals("", rec.get(0));
+		assertEquals("2", rec.get(1));
+		assertEquals("0", rec.get(2));
+		assertEquals("20", rec.get(3));
+		assertEquals("0", rec.get(4));
+		assertEquals("5", rec.get(5));
+		assertEquals("Lorem", rec.get(6));
+
+		rec = iter.next();
+		assertEquals("", rec.get(0));
+		assertEquals("2", rec.get(1));
+		assertEquals("0", rec.get(2));
+		assertEquals("20", rec.get(3));
+		assertEquals("6", rec.get(4));
+		assertEquals("11", rec.get(5));
+		assertEquals("ipsum", rec.get(6));
+
+		assertFalse(iter.hasNext());
+		csvp.close();
+
 	}
 
 }
