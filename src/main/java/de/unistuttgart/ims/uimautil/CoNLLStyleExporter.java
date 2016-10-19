@@ -83,7 +83,7 @@ public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
 		super.initialize(context);
 
 		try {
-			csvPrinter = new CSVPrinter(new FileWriter(outputFile), CSVFormat.TDF);
+			csvPrinter = new CSVPrinter(new FileWriter(outputFile), CSVFormat.DEFAULT);
 		} catch (IOException e) {
 			e.printStackTrace();
 			throw new ResourceInitializationException(e);
