@@ -33,6 +33,7 @@ add uima-util as a dependency to your pom.xml file with the following:
     - `trim()`: Various methods to trim annotations (removing whitespace at the front and end).
 - `WindowAnnotator`: Creates arbitrary annotations in UIMA documents, based on the length (measured in arbitrary annotation types) of the windows.
 - `FixedNumberWindowAnnotator`: Creates arbitrary annotations, distributed uniformly over all base annotations (type can be specified)
+- `CoNLLStyleExporter`: A component to create configurable CSV-files from annotations. Using a configuration file, it can be specified which features are to be included as columns in the output. You can also include covered annotations (e.g., tokens in a sentence) and select their respective features as well. The feature values of the covering annotation (the sentence) are repeated for every token then.
 
 ## Documentation
 - [javadoc](http://nilsreiter.github.io/uima-util/)
