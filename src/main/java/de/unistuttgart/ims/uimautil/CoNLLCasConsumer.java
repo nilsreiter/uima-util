@@ -41,7 +41,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.export.CoveredExportEntry;
 import de.unistuttgart.ims.uimautil.export.Column;
-import de.unistuttgart.ims.uimautil.export.FeaturePathExportEntry;
+import de.unistuttgart.ims.uimautil.export.FeaturePathColumn;
 import de.unistuttgart.ims.uimautil.export.PrimitiveColumn;
 
 @OperationalProperties(multipleDeploymentAllowed = false)
@@ -347,9 +347,9 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 				fp.initialize(path);
 				fp.typeInit(type);
 				if (labels.length > i) {
-					eelist.add(new FeaturePathExportEntry(fp, labels[i]));
+					eelist.add(new FeaturePathColumn(fp, labels[i]));
 				} else {
-					eelist.add(new FeaturePathExportEntry(fp));
+					eelist.add(new FeaturePathColumn(fp));
 				}
 			} catch (CASException e) {
 				e.printStackTrace();

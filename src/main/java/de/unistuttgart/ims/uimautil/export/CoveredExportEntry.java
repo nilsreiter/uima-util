@@ -10,16 +10,16 @@ import org.apache.uima.jcas.tcas.Annotation;
 public class CoveredExportEntry extends Column {
 
 	Class<? extends Annotation> coveredClass;
-	List<FeaturePathExportEntry> featurePathExportEntries;
+	List<FeaturePathColumn> featurePathExportEntries;
 	int useCovered = 1;
 
 	public CoveredExportEntry(Class<? extends Annotation> clazz, FeaturePath... fps) {
 		super(new String[fps.length]);
 		coveredClass = clazz;
-		featurePathExportEntries = new LinkedList<FeaturePathExportEntry>();
+		featurePathExportEntries = new LinkedList<FeaturePathColumn>();
 		for (int i = 0; i < fps.length; i++) {
 			super.label[i] = clazz.getSimpleName() + fps[i].getFeaturePath();
-			featurePathExportEntries.add(new FeaturePathExportEntry(fps[i]));
+			featurePathExportEntries.add(new FeaturePathColumn(fps[i]));
 		}
 	}
 

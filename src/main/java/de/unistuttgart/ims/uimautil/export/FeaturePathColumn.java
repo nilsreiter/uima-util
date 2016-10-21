@@ -3,17 +3,17 @@ package de.unistuttgart.ims.uimautil.export;
 import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class FeaturePathExportEntry extends Column {
+public class FeaturePathColumn extends Column {
 
 	FeaturePath featurePath;
 
-	public FeaturePathExportEntry(FeaturePath fp) {
+	public FeaturePathColumn(FeaturePath fp) {
 		super(new String[] { fp.getFeaturePath() });
 		datatype = Datatype.STRING;
 		featurePath = fp;
 	}
 
-	public FeaturePathExportEntry(FeaturePath fp, String label) {
+	public FeaturePathColumn(FeaturePath fp, String label) {
 		super(new String[] { label });
 		datatype = Datatype.STRING;
 		featurePath = fp;
