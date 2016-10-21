@@ -45,7 +45,7 @@ import de.unistuttgart.ims.uimautil.export.FeaturePathExportEntry;
 import de.unistuttgart.ims.uimautil.export.PrimitiveExportEntry;
 
 @OperationalProperties(multipleDeploymentAllowed = false)
-public class CoNLLStyleExporter extends JCasConsumer_ImplBase {
+public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 	public static final String PARAM_OUTPUT_FILE = "Output File";
 	public static final String PARAM_CONFIGURATION_FILE = "Configuration URL";

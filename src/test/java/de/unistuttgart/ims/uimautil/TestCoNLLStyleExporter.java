@@ -49,16 +49,16 @@ public class TestCoNLLStyleExporter {
 
 	@Test(expected = ResourceInitializationException.class)
 	public void testExporter1() throws AnalysisEngineProcessException, ResourceInitializationException {
-		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class));
+		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(CoNLLCasConsumer.class));
 	}
 
 	@Test
 	public void testExporter2()
 			throws AnalysisEngineProcessException, ResourceInitializationException, FileNotFoundException, IOException {
 		SimplePipeline.runPipeline(jcas,
-				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
-						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, Token.class, CoNLLStyleExporter.PARAM_OUTPUT_FILE,
-						"target/conll2.csv", CoNLLStyleExporter.PARAM_CONFIGURATION_FILE,
+				AnalysisEngineFactory.createEngineDescription(CoNLLCasConsumer.class,
+						CoNLLCasConsumer.PARAM_ANNOTATION_CLASS, Token.class, CoNLLCasConsumer.PARAM_OUTPUT_FILE,
+						"target/conll2.csv", CoNLLCasConsumer.PARAM_CONFIGURATION_FILE,
 						"file:src/test/resources/CoNLLExportConfig.ini"));
 
 		CSVParser csvp = new CSVParser(new FileReader("target/conll2.csv"), CSVFormat.DEFAULT.withHeader());
@@ -83,10 +83,10 @@ public class TestCoNLLStyleExporter {
 	public void testExporter3()
 			throws AnalysisEngineProcessException, ResourceInitializationException, FileNotFoundException, IOException {
 		SimplePipeline.runPipeline(jcas,
-				AnalysisEngineFactory.createEngineDescription(CoNLLStyleExporter.class,
-						CoNLLStyleExporter.PARAM_ANNOTATION_CLASS, TestSegment.class,
-						CoNLLStyleExporter.PARAM_OUTPUT_FILE, "target/conll3.csv",
-						CoNLLStyleExporter.PARAM_CONFIGURATION_FILE, "file:src/test/resources/CoNLLExportConfig2.ini"));
+				AnalysisEngineFactory.createEngineDescription(CoNLLCasConsumer.class,
+						CoNLLCasConsumer.PARAM_ANNOTATION_CLASS, TestSegment.class,
+						CoNLLCasConsumer.PARAM_OUTPUT_FILE, "target/conll3.csv",
+						CoNLLCasConsumer.PARAM_CONFIGURATION_FILE, "file:src/test/resources/CoNLLExportConfig2.ini"));
 
 		CSVParser csvp = new CSVParser(new FileReader("target/conll3.csv"), CSVFormat.DEFAULT.withHeader());
 		Iterator<CSVRecord> iter = csvp.iterator();
