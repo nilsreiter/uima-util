@@ -3,7 +3,7 @@ package de.unistuttgart.ims.uimautil.export;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class PrimitiveExportEntry extends ExportEntry {
+public class PrimitiveExportEntry extends Column {
 	Feature feature;
 
 	public PrimitiveExportEntry(Feature feature) {

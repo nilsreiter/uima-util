@@ -40,7 +40,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.export.CoveredExportEntry;
-import de.unistuttgart.ims.uimautil.export.ExportEntry;
+import de.unistuttgart.ims.uimautil.export.Column;
 import de.unistuttgart.ims.uimautil.export.FeaturePathExportEntry;
 import de.unistuttgart.ims.uimautil.export.PrimitiveExportEntry;
 
@@ -69,7 +69,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 	CSVPrinter csvPrinter;
 
-	List<ExportEntry> eelist;
+	List<Column> eelist;
 
 	Class<? extends Annotation> annotationClass;
 	Class<? extends Annotation> coveredAnnotationClass = null;
@@ -171,7 +171,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 			String confEntry = confValues[i].trim();
 			String confEntryLabel = confValueLabels[i].trim();
 			if (confEntry.equalsIgnoreCase("DocumentId")) {
-				eelist.add(0, new ExportEntry(new String[] { confEntryLabel }) {
+				eelist.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
 					public Object getValue(Annotation a) {
@@ -188,7 +188,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 					}
 				});
 			} else if (confEntry.equalsIgnoreCase("Length")) {
-				eelist.add(0, new ExportEntry(new String[] { confEntryLabel }) {
+				eelist.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
 					public Object getValue(Annotation a) {
@@ -212,7 +212,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 		// assemble the header
 		List<Object> header = new LinkedList<Object>();
-		for (ExportEntry ee : eelist) {
+		for (Column ee : eelist) {
 			for (String s : ee.getLabel()) {
 				header.add(s);
 			}
@@ -257,12 +257,12 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 		IOUtils.closeQuietly(csvPrinter);
 	}
 
-	private ArrayList<ArrayList<Object>> printFeatureValues(Annotation a, Iterator<ExportEntry> eelist) {
+	private ArrayList<ArrayList<Object>> printFeatureValues(Annotation a, Iterator<Column> eelist) {
 		ArrayList<ArrayList<Object>> r = new ArrayList<ArrayList<Object>>();
 		r.add(new ArrayList<Object>());
 
 		while (eelist.hasNext()) {
-			ExportEntry ee = eelist.next();
+			Column ee = eelist.next();
 			Object value = ee.getValue(a);
 			if (ee.isMultiplying()) {
 				ArrayList<ArrayList<ArrayList<Object>>> clones = new ArrayList<ArrayList<ArrayList<Object>>>();
@@ -328,8 +328,8 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<ExportEntry> getExportEntries(JCas jcas, Type type, Type coveredType) {
-		List<ExportEntry> eelist = new LinkedList<ExportEntry>();
+	protected List<Column> getExportEntries(JCas jcas, Type type, Type coveredType) {
+		List<Column> eelist = new LinkedList<Column>();
 
 		for (Feature fd : type.getFeatures()) {
 			if (fd.getRange().isPrimitive()) {
@@ -376,7 +376,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 				}
 			}
 			try {
-				ExportEntry ee = new CoveredExportEntry((Class<? extends Annotation>) Class.forName(covTypes[j]), path);
+				Column ee = new CoveredExportEntry((Class<? extends Annotation>) Class.forName(covTypes[j]), path);
 				ee.setLabel(labels);
 				eelist.add(ee);
 			} catch (ClassNotFoundException e) {
@@ -401,7 +401,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 				}
 			}
 			try {
-				ExportEntry ee = new CoveredExportEntry(
+				Column ee = new CoveredExportEntry(
 						(Class<? extends Annotation>) Class.forName(coveredType.getName()), path);
 				ee.setLabel(labels);
 				eelist.add(ee);

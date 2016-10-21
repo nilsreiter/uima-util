@@ -3,7 +3,7 @@ package de.unistuttgart.ims.uimautil.export;
 import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class FeaturePathExportEntry extends ExportEntry {
+public class FeaturePathExportEntry extends Column {
 
 	FeaturePath featurePath;
 

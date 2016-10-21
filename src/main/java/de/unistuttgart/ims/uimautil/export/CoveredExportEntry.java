@@ -7,7 +7,7 @@ import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class CoveredExportEntry extends ExportEntry {
+public class CoveredExportEntry extends Column {
 
 	Class<? extends Annotation> coveredClass;
 	List<FeaturePathExportEntry> featurePathExportEntries;
