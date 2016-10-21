@@ -42,7 +42,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.export.CoveredExportEntry;
 import de.unistuttgart.ims.uimautil.export.Column;
 import de.unistuttgart.ims.uimautil.export.FeaturePathExportEntry;
-import de.unistuttgart.ims.uimautil.export.PrimitiveExportEntry;
+import de.unistuttgart.ims.uimautil.export.PrimitiveColumn;
 
 @OperationalProperties(multipleDeploymentAllowed = false)
 public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
@@ -333,7 +333,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 		for (Feature fd : type.getFeatures()) {
 			if (fd.getRange().isPrimitive()) {
-				PrimitiveExportEntry pee = new PrimitiveExportEntry(
+				PrimitiveColumn pee = new PrimitiveColumn(
 						jcas.getTypeSystem().getFeatureByFullName(fd.getName()));
 				eelist.add(pee);
 			}
