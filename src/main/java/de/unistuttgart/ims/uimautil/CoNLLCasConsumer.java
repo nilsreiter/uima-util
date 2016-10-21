@@ -69,7 +69,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 	CSVPrinter csvPrinter;
 
-	List<Column> eelist;
+	List<Column> columnList;
 
 	Class<? extends Annotation> annotationClass;
 	Class<? extends Annotation> coveredAnnotationClass = null;
@@ -161,7 +161,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 			coveredType = jcas.getTypeSystem().getType(coveredAnnotationClass.getName());
 		}
 
-		eelist = getExportEntries(jcas, type, coveredType);
+		columnList = getColumns(jcas, type, coveredType);
 
 		String confKey = type.getName().replaceAll("\\.", "..") + ".fixed";
 		String[] confValues = config.getString(confKey, "").split(",");
@@ -171,7 +171,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 			String confEntry = confValues[i].trim();
 			String confEntryLabel = confValueLabels[i].trim();
 			if (confEntry.equalsIgnoreCase("DocumentId")) {
-				eelist.add(0, new Column(new String[] { confEntryLabel }) {
+				columnList.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
 					public Object getValue(Annotation a) {
@@ -188,7 +188,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 					}
 				});
 			} else if (confEntry.equalsIgnoreCase("Length")) {
-				eelist.add(0, new Column(new String[] { confEntryLabel }) {
+				columnList.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
 					public Object getValue(Annotation a) {
@@ -212,7 +212,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 		// assemble the header
 		List<Object> header = new LinkedList<Object>();
-		for (Column ee : eelist) {
+		for (Column ee : columnList) {
 			for (String s : ee.getLabel()) {
 				header.add(s);
 			}
@@ -235,7 +235,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 		// print entries
 		for (Annotation a : annotationList) {
 
-			for (List<Object> l : printFeatureValues(a, eelist.iterator())) {
+			for (List<Object> l : printFeatureValues(a, columnList.iterator())) {
 				try {
 					csvPrinter.printRecord(l);
 				} catch (IOException e) {
@@ -298,7 +298,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 	}
 
-	private String[] getExportPathsForType(Type type) {
+	private String[] getFeaturePathsForType(Type type) {
 		String confKey = type.getName().replaceAll("\\.", "..") + ".paths";
 		String confEntry = config.getString(confKey, null);
 		if (confEntry != null && !confEntry.isEmpty())
@@ -308,7 +308,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 
 	}
 
-	private String[] getPathLabelsForType(Type type) {
+	private String[] getColumnHeadersForType(Type type) {
 		String confKey = type.getName().replaceAll("\\.", "..") + ".labels";
 		String confEntry = config.getString(confKey, null);
 		if (confEntry != null && !confEntry.isEmpty())
@@ -328,7 +328,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected List<Column> getExportEntries(JCas jcas, Type type, Type coveredType) {
+	protected List<Column> getColumns(JCas jcas, Type type, Type coveredType) {
 		List<Column> eelist = new LinkedList<Column>();
 
 		for (Feature fd : type.getFeatures()) {
@@ -338,8 +338,8 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 				eelist.add(pee);
 			}
 		}
-		String[] paths = this.getExportPathsForType(type);
-		String[] labels = this.getPathLabelsForType(type);
+		String[] paths = this.getFeaturePathsForType(type);
+		String[] labels = this.getColumnHeadersForType(type);
 		for (int i = 0; i < paths.length; i++) {
 			String path = paths[i];
 			FeaturePath fp = jcas.createFeaturePath();
@@ -358,8 +358,8 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 		}
 		String[] covTypes = this.getCoveringsForType(type);
 		for (int j = 0; j < covTypes.length; j++) {
-			paths = getExportPathsForType(jcas.getTypeSystem().getType(covTypes[j]));
-			labels = getPathLabelsForType(jcas.getTypeSystem().getType(covTypes[j]));
+			paths = getFeaturePathsForType(jcas.getTypeSystem().getType(covTypes[j]));
+			labels = getColumnHeadersForType(jcas.getTypeSystem().getType(covTypes[j]));
 			FeaturePath[] path = new FeaturePath[paths.length];
 			for (int i = 0; i < path.length; i++) {
 				path[i] = jcas.createFeaturePath();
@@ -387,8 +387,8 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 		if (coveredType != null)
 
 		{
-			labels = getPathLabelsForType(coveredType);
-			paths = getExportPathsForType(coveredType);
+			labels = getColumnHeadersForType(coveredType);
+			paths = getFeaturePathsForType(coveredType);
 			FeaturePath[] path = new FeaturePath[paths.length];
 			for (int i = 0; i < path.length; i++) {
 				path[i] = jcas.createFeaturePath();
