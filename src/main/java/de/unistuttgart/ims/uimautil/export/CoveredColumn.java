@@ -7,13 +7,13 @@ import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class CoveredExportEntry extends Column {
+public class CoveredColumn extends Column {
 
 	Class<? extends Annotation> coveredClass;
 	List<FeaturePathColumn> featurePathExportEntries;
 	int useCovered = 1;
 
-	public CoveredExportEntry(Class<? extends Annotation> clazz, FeaturePath... fps) {
+	public CoveredColumn(Class<? extends Annotation> clazz, FeaturePath... fps) {
 		super(new String[fps.length]);
 		coveredClass = clazz;
 		featurePathExportEntries = new LinkedList<FeaturePathColumn>();

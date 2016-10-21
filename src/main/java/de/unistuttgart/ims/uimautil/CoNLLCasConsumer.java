@@ -39,7 +39,7 @@ import org.apache.uima.resource.metadata.TypeSystemDescription;
 
 import de.tudarmstadt.ukp.dkpro.core.api.metadata.type.DocumentMetaData;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
-import de.unistuttgart.ims.uimautil.export.CoveredExportEntry;
+import de.unistuttgart.ims.uimautil.export.CoveredColumn;
 import de.unistuttgart.ims.uimautil.export.Column;
 import de.unistuttgart.ims.uimautil.export.FeaturePathColumn;
 import de.unistuttgart.ims.uimautil.export.PrimitiveColumn;
@@ -376,7 +376,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 				}
 			}
 			try {
-				Column ee = new CoveredExportEntry((Class<? extends Annotation>) Class.forName(covTypes[j]), path);
+				Column ee = new CoveredColumn((Class<? extends Annotation>) Class.forName(covTypes[j]), path);
 				ee.setLabel(labels);
 				eelist.add(ee);
 			} catch (ClassNotFoundException e) {
@@ -401,7 +401,7 @@ public class CoNLLCasConsumer extends JCasConsumer_ImplBase {
 				}
 			}
 			try {
-				Column ee = new CoveredExportEntry(
+				Column ee = new CoveredColumn(
 						(Class<? extends Annotation>) Class.forName(coveredType.getName()), path);
 				ee.setLabel(labels);
 				eelist.add(ee);
