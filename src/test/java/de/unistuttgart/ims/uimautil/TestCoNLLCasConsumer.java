@@ -27,7 +27,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.api.TestSegment;
 
-public class TestCoNLLStyleExporter {
+public class TestCoNLLCasConsumer {
 	JCas jcas;
 
 	@Before
