@@ -40,7 +40,7 @@ public class CoNLLExport {
 		return result;
 	}
 
-	List<? extends List<Object>> convert(JCas jcas) {
+	public List<? extends List<Object>> convert(JCas jcas) {
 		Collection<? extends Annotation> annotationList = JCasUtil.select(jcas, annotationClass);
 
 		// print entries
