@@ -7,19 +7,19 @@ import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.tcas.Annotation;
 
-public class CoveredExportEntry extends ExportEntry {
+public class CoveredColumn extends Column {
 
 	Class<? extends Annotation> coveredClass;
-	List<FeaturePathExportEntry> featurePathExportEntries;
+	List<FeaturePathColumn> featurePathExportEntries;
 	int useCovered = 1;
 
-	public CoveredExportEntry(Class<? extends Annotation> clazz, FeaturePath... fps) {
+	public CoveredColumn(Class<? extends Annotation> clazz, FeaturePath... fps) {
 		super(new String[fps.length]);
 		coveredClass = clazz;
-		featurePathExportEntries = new LinkedList<FeaturePathExportEntry>();
+		featurePathExportEntries = new LinkedList<FeaturePathColumn>();
 		for (int i = 0; i < fps.length; i++) {
 			super.label[i] = clazz.getSimpleName() + fps[i].getFeaturePath();
-			featurePathExportEntries.add(new FeaturePathExportEntry(fps[i]));
+			featurePathExportEntries.add(new FeaturePathColumn(fps[i]));
 		}
 	}
 

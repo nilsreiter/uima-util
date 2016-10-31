@@ -2,11 +2,11 @@ package de.unistuttgart.ims.uimautil.export;
 
 import org.apache.uima.jcas.tcas.Annotation;
 
-public abstract class ExportEntry {
+public abstract class Column {
 	Datatype datatype;
 	String[] label;
 
-	public ExportEntry(String[] l) {
+	public Column(String[] l) {
 		label = l;
 	}
 
