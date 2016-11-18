@@ -20,6 +20,7 @@ import java.util.Set;
 
 import org.apache.uima.UimaContext;
 import org.apache.uima.analysis_engine.AnalysisEngineProcessException;
+import org.apache.uima.cas.Feature;
 import org.apache.uima.fit.component.JCasAnnotator_ImplBase;
 import org.apache.uima.fit.descriptor.ConfigurationParameter;
 import org.apache.uima.fit.factory.AnnotationFactory;
@@ -33,6 +34,8 @@ public class MapAnnotations extends JCasAnnotator_ImplBase {
 	final static public String PARAM_SOURCE_CLASS = "Source Class";
 	final static public String PARAM_TARGET_CLASS = "Target Class";
 	final static public String PARAM_DELETE_SOURCE = "Delete Source";
+	final static public String PARAM_FEATURE_NAME = "Target Feature Name";
+	final static public String PARAM_FEATURE_VALUE = "Target Feature Value";
 
 	@ConfigurationParameter(name = PARAM_TARGET_CLASS)
 	String targetClassName;
@@ -40,9 +43,14 @@ public class MapAnnotations extends JCasAnnotator_ImplBase {
 	@ConfigurationParameter(name = PARAM_SOURCE_CLASS)
 	String sourceClassName;
 
-	@ConfigurationParameter(name = PARAM_DELETE_SOURCE, mandatory = false,
-			defaultValue = "false")
+	@ConfigurationParameter(name = PARAM_DELETE_SOURCE, mandatory = false, defaultValue = "false")
 	boolean deleteSource = false;
+
+	@ConfigurationParameter(name = PARAM_FEATURE_NAME, mandatory = false, defaultValue = "")
+	String targetFeatureName;
+
+	@ConfigurationParameter(name = PARAM_FEATURE_VALUE, mandatory = false, defaultValue = "")
+	String targetFeatureValue;
 
 	Class<? extends Annotation> sourceClass;
 
@@ -50,16 +58,11 @@ public class MapAnnotations extends JCasAnnotator_ImplBase {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void initialize(final UimaContext context)
-			throws ResourceInitializationException {
+	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 		try {
-			sourceClass =
-					(Class<? extends Annotation>) Class
-							.forName(sourceClassName);
-			targetClass =
-					(Class<? extends Annotation>) Class
-					.forName(targetClassName);
+			sourceClass = (Class<? extends Annotation>) Class.forName(sourceClassName);
+			targetClass = (Class<? extends Annotation>) Class.forName(targetClassName);
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			throw new ResourceInitializationException(e);
@@ -74,9 +77,15 @@ public class MapAnnotations extends JCasAnnotator_ImplBase {
 		}
 
 		for (Annotation anno : JCasUtil.select(jcas, sourceClass)) {
-			AnnotationFactory.createAnnotation(jcas, anno.getBegin(),
-					anno.getEnd(), targetClass);
-			if (deleteSource) toDelete.add(anno);
+			Annotation newAnnotation = AnnotationFactory.createAnnotation(jcas, anno.getBegin(), anno.getEnd(),
+					targetClass);
+			if (deleteSource)
+				toDelete.add(anno);
+
+			if (!(targetFeatureName.isEmpty() || targetFeatureValue.isEmpty())) {
+				Feature feature = newAnnotation.getType().getFeatureByBaseName(targetFeatureName);
+				newAnnotation.setFeatureValueFromString(feature, targetFeatureValue);
+			}
 		}
 
 		if (deleteSource) {
