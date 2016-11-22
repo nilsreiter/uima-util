@@ -84,7 +84,8 @@ public class MapAnnotations extends JCasAnnotator_ImplBase {
 
 			if (!(targetFeatureName.isEmpty() || targetFeatureValue.isEmpty())) {
 				Feature feature = newAnnotation.getType().getFeatureByBaseName(targetFeatureName);
-				newAnnotation.setFeatureValueFromString(feature, targetFeatureValue);
+				if (feature != null)
+					newAnnotation.setFeatureValueFromString(feature, targetFeatureValue);
 			}
 		}
 
