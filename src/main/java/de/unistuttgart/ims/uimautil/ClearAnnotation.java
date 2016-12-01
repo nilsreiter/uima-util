@@ -33,9 +33,14 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 
 	public static final String PARAM_TYPE = "Type to Remove";
 
+	public static final String PARAM_INCLUDE_SUBTYPES = "Include subtypes";
+
 	@ConfigurationParameter(name = PARAM_TYPE)
 	String type = null;
 	Class<? extends Annotation> clazz;
+
+	@ConfigurationParameter(name = PARAM_INCLUDE_SUBTYPES, mandatory = false, defaultValue = "true")
+	boolean includeSubtypes = true;
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -56,7 +61,10 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		try {
 			Annotation a = clazz.getConstructor(JCas.class).newInstance(jcas);
-			jcas.removeAllIncludingSubtypes(a.getTypeIndexID());
+			if (includeSubtypes)
+				jcas.removeAllIncludingSubtypes(a.getTypeIndexID());
+			else
+				jcas.removeAllExcludingSubtypes(a.getTypeIndexID());
 		} catch (Exception e) {
 			throw new AnalysisEngineProcessException(e);
 		}
