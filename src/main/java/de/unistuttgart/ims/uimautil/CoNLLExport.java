@@ -72,14 +72,14 @@ public class CoNLLExport {
 
 		columnList = getColumns(jcas, type, coveredType);
 
-		String confKey = type.getName().replaceAll("\\.", "..");
-		String[] confValues = configuration.getString(confKey + ".paths", "").split(",");
-		String[] confValueLabels = configuration.getString(confKey + ".labels", "").split(",");
+		String confKey = type.getName().replaceAll("\\.", "..") + ".fixed";
+		String[] confValues = configuration.getString(confKey, "").split(",");
+		String[] confValueLabels = configuration.getString(confKey + "_labels", "").split(",");
 
 		for (int i = 0; i < confValues.length; i++) {
 			String confEntry = confValues[i].trim();
 			String confEntryLabel = confValueLabels[i].trim();
-			if (confEntry.equalsIgnoreCase("|DocumentId")) {
+			if (confEntry.equalsIgnoreCase("DocumentId")) {
 				columnList.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
@@ -96,7 +96,7 @@ public class CoNLLExport {
 						return false;
 					}
 				});
-			} else if (confEntry.equalsIgnoreCase("|Length")) {
+			} else if (confEntry.equalsIgnoreCase("Length")) {
 				columnList.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
@@ -214,8 +214,6 @@ public class CoNLLExport {
 		String[] labels = this.getColumnHeadersForType(type);
 		for (int i = 0; i < paths.length; i++) {
 			String path = paths[i];
-			if (path.startsWith("|"))
-				continue;
 			FeaturePath fp = jcas.createFeaturePath();
 			try {
 				fp.initialize(path);
