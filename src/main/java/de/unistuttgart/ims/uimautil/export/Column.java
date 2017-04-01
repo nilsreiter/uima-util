@@ -1,6 +1,6 @@
 package de.unistuttgart.ims.uimautil.export;
 
-import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.cas.TOP;
 
 public abstract class Column {
 	Datatype datatype;
@@ -26,7 +26,7 @@ public abstract class Column {
 		this.datatype = datatype;
 	}
 
-	public abstract Object getValue(Annotation a);
+	public abstract Object getValue(TOP a);
 
 	public abstract boolean isMultiplying();
 }

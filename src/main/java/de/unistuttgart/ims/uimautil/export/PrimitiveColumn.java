@@ -1,7 +1,7 @@
 package de.unistuttgart.ims.uimautil.export;
 
 import org.apache.uima.cas.Feature;
-import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.cas.TOP;
 
 public class PrimitiveColumn extends Column {
 	Feature feature;
@@ -13,7 +13,7 @@ public class PrimitiveColumn extends Column {
 	}
 
 	@Override
-	public Object getValue(Annotation a) {
+	public Object getValue(TOP a) {
 		switch (getDatatype()) {
 		case BOOLEAN:
 			return a.getBooleanValue(feature);

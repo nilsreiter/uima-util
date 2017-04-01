@@ -1,7 +1,7 @@
 package de.unistuttgart.ims.uimautil.export;
 
 import org.apache.uima.cas.FeaturePath;
-import org.apache.uima.jcas.tcas.Annotation;
+import org.apache.uima.jcas.cas.TOP;
 
 public class FeaturePathColumn extends Column {
 
@@ -20,7 +20,7 @@ public class FeaturePathColumn extends Column {
 	}
 
 	@Override
-	public Object getValue(Annotation a) {
+	public Object getValue(TOP a) {
 		switch (getDatatype()) {
 		case BOOLEAN:
 			return featurePath.getBooleanValue(a);

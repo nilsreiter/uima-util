@@ -16,6 +16,7 @@ import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.fit.factory.TypeSystemDescriptionFactory;
 import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
+import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
@@ -32,7 +33,7 @@ public class CoNLLExport {
 
 	List<Column> columnList;
 	Type type;
-	Class<? extends Annotation> annotationClass;
+	Class<? extends TOP> annotationClass;
 	Class<? extends Annotation> coveredAnnotationClass;
 	List<List<Object>> result = new LinkedList<List<Object>>();
 
@@ -41,10 +42,10 @@ public class CoNLLExport {
 	}
 
 	public List<? extends List<Object>> convert(JCas jcas) {
-		Collection<? extends Annotation> annotationList = JCasUtil.select(jcas, annotationClass);
+		Collection<? extends TOP> annotationList = JCasUtil.select(jcas, annotationClass);
 
 		// print entries
-		for (Annotation a : annotationList) {
+		for (TOP a : annotationList) {
 
 			result.addAll(printFeatureValues(a, columnList.iterator()));
 
@@ -52,7 +53,7 @@ public class CoNLLExport {
 		return result;
 	}
 
-	public void init(Configuration config, JCas jcas, Class<? extends Annotation> annotationClass,
+	public void init(Configuration config, JCas jcas, Class<? extends TOP> annotationClass,
 			Class<? extends Annotation> coveredAnnotationClass) throws UIMAException {
 		this.configuration = config;
 		this.annotationClass = annotationClass;
@@ -83,7 +84,7 @@ public class CoNLLExport {
 				columnList.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
-					public Object getValue(Annotation a) {
+					public Object getValue(TOP a) {
 						try {
 							return DocumentMetaData.get(a.getCAS()).getDocumentId();
 						} catch (Exception e) {
@@ -100,7 +101,7 @@ public class CoNLLExport {
 				columnList.add(0, new Column(new String[] { confEntryLabel }) {
 
 					@Override
-					public Object getValue(Annotation a) {
+					public Object getValue(TOP a) {
 						try {
 							JCas jcas = a.getCAS().getJCas();
 							return JCasUtil.select(jcas, Token.class).size();
@@ -130,7 +131,7 @@ public class CoNLLExport {
 		result.add(header);
 	}
 
-	private ArrayList<ArrayList<Object>> printFeatureValues(Annotation a, Iterator<Column> eelist) {
+	private ArrayList<ArrayList<Object>> printFeatureValues(TOP a, Iterator<Column> eelist) {
 		ArrayList<ArrayList<Object>> r = new ArrayList<ArrayList<Object>>();
 		r.add(new ArrayList<Object>());
 
