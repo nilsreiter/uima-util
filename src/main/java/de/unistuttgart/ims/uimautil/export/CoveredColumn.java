@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.fit.util.JCasUtil;
+import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 
 public class CoveredColumn extends Column {
@@ -24,7 +25,8 @@ public class CoveredColumn extends Column {
 	}
 
 	@Override
-	public Object getValue(Annotation a) {
+	public Object getValue(TOP top) {
+		Annotation a = (Annotation) top;
 		List<? extends Annotation> l = JCasUtil.selectCovered(coveredClass, a);
 		Object[][] r = new Object[l.size()][featurePathExportEntries.size()];
 
