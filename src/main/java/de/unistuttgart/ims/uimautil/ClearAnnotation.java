@@ -42,19 +42,10 @@ public class ClearAnnotation extends JCasAnnotator_ImplBase {
 	@ConfigurationParameter(name = PARAM_INCLUDE_SUBTYPES, mandatory = false, defaultValue = "true")
 	boolean includeSubtypes = true;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		Class<?> cl;
-		try {
-			cl = Class.forName(type);
-		} catch (final ClassNotFoundException e) {
-			throw new ResourceInitializationException(e);
-		}
-
-		clazz = (Class<? extends Annotation>) cl;
-
+		clazz = TypeParameterUtil.getClass(type);
 	}
 
 	@Override

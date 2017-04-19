@@ -73,6 +73,8 @@ public class DocumentCSVConsumer extends JCasFileWriter_ImplBase {
 
 	int numAttributes = 0;
 
+	Class<? extends Annotation> cl;
+
 	@Override
 	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
@@ -114,6 +116,7 @@ public class DocumentCSVConsumer extends JCasFileWriter_ImplBase {
 		if (firstAttribute != null)
 			attributes.add(0, firstAttribute);
 
+		cl = TypeParameterUtil.getClass(annotationType);
 	}
 
 	protected String makeAttribute(FeatureDescription fd) {
@@ -137,7 +140,6 @@ public class DocumentCSVConsumer extends JCasFileWriter_ImplBase {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void process(JCas jcas) throws AnalysisEngineProcessException {
 		NamedOutputStream aw = null;
@@ -148,14 +150,6 @@ public class DocumentCSVConsumer extends JCasFileWriter_ImplBase {
 			ps = new PrintStream(aw);
 			p = new CSVPrinter(ps, CSVFormat.DEFAULT);
 
-			Class<? extends Annotation> cl = null;
-			try {
-				cl = (Class<? extends Annotation>) Class.forName(annotationType);
-			} catch (ClassNotFoundException e) {
-				throw new AnalysisEngineProcessException(e);
-			} catch (ClassCastException e) {
-				throw new AnalysisEngineProcessException(e);
-			}
 			Type type = jcas.getTypeSystem().getType(typeDescription.getName());
 			for (Annotation anno : JCasUtil.select(jcas, cl)) {
 

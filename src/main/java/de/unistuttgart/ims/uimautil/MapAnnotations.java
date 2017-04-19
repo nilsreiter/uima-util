@@ -56,17 +56,11 @@ public class MapAnnotations extends JCasAnnotator_ImplBase {
 
 	Class<? extends Annotation> targetClass;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		try {
-			sourceClass = (Class<? extends Annotation>) Class.forName(sourceClassName);
-			targetClass = (Class<? extends Annotation>) Class.forName(targetClassName);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			throw new ResourceInitializationException(e);
-		}
+		sourceClass = TypeParameterUtil.getClass(sourceClassName);
+		targetClass = TypeParameterUtil.getClass(targetClassName);
 	}
 
 	@Override

@@ -19,19 +19,10 @@ public class RemoveDuplicateAnnotations extends JCasAnnotator_ImplBase {
 	String type = null;
 	Class<? extends Annotation> clazz;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		Class<?> cl;
-		try {
-			cl = Class.forName(type);
-		} catch (final ClassNotFoundException e) {
-			throw new ResourceInitializationException(e);
-		}
-
-		clazz = (Class<? extends Annotation>) cl;
-
+		clazz = TypeParameterUtil.getClass(type);
 	}
 
 	@Override
