@@ -13,4 +13,14 @@ public class TypeParameterUtil {
 			throw new ResourceInitializationException(e);
 		}
 	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> Class<? extends T> getClass(String name, Class<? extends T> defaultValue) {
+		try {
+			Class<?> r = ClassUtils.getClass(name);
+			return (Class<T>) r;
+		} catch (Exception e) {
+			return defaultValue;
+		}
+	}
 }
