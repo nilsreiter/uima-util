@@ -29,7 +29,7 @@ public class WindowAnnotator extends AbstractWindowAnnotator {
 	public static final String PARAM_OVERLAPS = "Overlapping Windows";
 	public static final String PARAM_SEGMENT_ANNOTATION = "Segment Annotation";
 
-	@ConfigurationParameter(name = PARAM_SEGMENT_ANNOTATION, mandatory = false)
+	@ConfigurationParameter(name = PARAM_SEGMENT_ANNOTATION, mandatory = false, defaultValue = "null")
 	String segmentAnnotationClassName = null;
 
 	@ConfigurationParameter(name = PARAM_WINDOW_SIZE, mandatory = true)
@@ -43,7 +43,7 @@ public class WindowAnnotator extends AbstractWindowAnnotator {
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		segmentAnnotationClass = TypeParameterUtil.getClass(segmentAnnotationClassName);
+		segmentAnnotationClass = TypeParameterUtil.getClass(segmentAnnotationClassName, null);
 	}
 
 	@Override
