@@ -40,23 +40,10 @@ public class WindowAnnotator extends AbstractWindowAnnotator {
 
 	Class<? extends Annotation> segmentAnnotationClass = null;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		Class<?> tA;
-
-		try {
-			if (segmentAnnotationClassName != null) {
-				tA = Class.forName(segmentAnnotationClassName);
-				if (Annotation.class.isAssignableFrom(tA))
-					segmentAnnotationClass = (Class<? extends Annotation>) tA;
-				else
-					throw new ResourceInitializationException();
-			}
-		} catch (final ClassNotFoundException e1) {
-			throw new ResourceInitializationException(e1);
-		}
+		segmentAnnotationClass = TypeParameterUtil.getClass(segmentAnnotationClassName);
 	}
 
 	@Override

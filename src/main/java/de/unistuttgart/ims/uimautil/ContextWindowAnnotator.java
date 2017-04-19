@@ -43,16 +43,10 @@ public class ContextWindowAnnotator extends AbstractWindowAnnotator {
 	@ConfigurationParameter(name = PARAM_CONTEXT_SIZE_RIGHT, mandatory = false, defaultValue = "3")
 	int rightContextSize = 3;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-
-		try {
-			contextClass = (Class<? extends Annotation>) Class.forName(contextClassName);
-		} catch (ClassNotFoundException e) {
-			throw new ResourceInitializationException(e);
-		}
+		contextClass = TypeParameterUtil.getClass(contextClassName);
 	}
 
 	@Override
