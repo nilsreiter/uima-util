@@ -295,4 +295,8 @@ public class CoNLLExport {
 			return new String[0];
 
 	}
+
+	public void clearResult() {
+		result.clear();
+	}
 }
