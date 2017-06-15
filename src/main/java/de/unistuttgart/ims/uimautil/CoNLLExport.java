@@ -97,6 +97,23 @@ public class CoNLLExport {
 						return false;
 					}
 				});
+			} else if (confEntry.equalsIgnoreCase("CollectionId")) {
+				columnList.add(0, new Column(new String[] { confEntryLabel }) {
+
+					@Override
+					public Object getValue(TOP a) {
+						try {
+							return DocumentMetaData.get(a.getCAS()).getCollectionId();
+						} catch (Exception e) {
+							return "";
+						}
+					}
+
+					@Override
+					public boolean isMultiplying() {
+						return false;
+					}
+				});
 			} else if (confEntry.equalsIgnoreCase("Length")) {
 				columnList.add(0, new Column(new String[] { confEntryLabel }) {
 
