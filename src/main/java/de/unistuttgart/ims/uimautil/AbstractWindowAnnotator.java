@@ -21,34 +21,12 @@ public abstract class AbstractWindowAnnotator extends JCasAnnotator_ImplBase {
 
 	protected Class<? extends Annotation> baseAnnotation = null;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
 
-		Class<?> tA;
-
-		try {
-			tA = Class.forName(targetAnnotationClassName);
-			if (Annotation.class.isAssignableFrom(tA))
-				targetAnnotation = (Class<? extends Annotation>) tA;
-			else
-				throw new ResourceInitializationException();
-		} catch (final ClassNotFoundException e1) {
-			throw new ResourceInitializationException(e1);
-		}
-
-		try {
-			if (baseAnnotationClassName != null) {
-				tA = Class.forName(baseAnnotationClassName);
-				if (Annotation.class.isAssignableFrom(tA))
-					baseAnnotation = (Class<? extends Annotation>) tA;
-				else
-					throw new ResourceInitializationException();
-			}
-		} catch (final ClassNotFoundException e1) {
-			throw new ResourceInitializationException(e1);
-		}
+		targetAnnotation = TypeParameterUtil.getClass(targetAnnotationClassName);
+		baseAnnotation = TypeParameterUtil.getClass(baseAnnotationClassName, null);
 
 	}
 

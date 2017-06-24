@@ -124,6 +124,7 @@ public class AnnotationUtil {
 	 *            the annotation type
 	 * @return the trimmed annotation
 	 * @since 0.4.1
+	 * @deprecated Use {@link #trimBegin(Annotation, char...)} instead.
 	 */
 	@Deprecated
 	public static <T extends Annotation> T trimFront(T annotation, char... ws) {
@@ -141,11 +142,12 @@ public class AnnotationUtil {
 	 * @param <T>
 	 *            the annotation type
 	 * @return the trimmed annotation
-     * @since 0.4.2
+	 * @since 0.4.2
 	 */
 	public static <T extends Annotation> T trimBegin(T annotation, char... ws) {
 		char[] s = annotation.getCoveredText().toCharArray();
-		if (s.length == 0) return annotation;
+		if (s.length == 0)
+			return annotation;
 
 		int b = 0;
 		while (ArrayUtils.contains(ws, s[b])) {
@@ -165,11 +167,12 @@ public class AnnotationUtil {
 	 * @param ws
 	 *            An array of characters which are considered whitespace
 	 * @return The trimmed annotation
-     * @since 0.4.2
+	 * @since 0.4.2
 	 */
 	public static <T extends Annotation> T trimEnd(T annotation, char... ws) {
 		char[] s = annotation.getCoveredText().toCharArray();
-		if (s.length == 0) return annotation;
+		if (s.length == 0)
+			return annotation;
 
 		int e = 0;
 		while (ArrayUtils.contains(ws, s[(s.length - 1) - e])) {

@@ -29,25 +29,11 @@ public class ConvertBoundaryToSegmentAnnotation extends JCasAnnotator_ImplBase {
 
 	Class<? extends Annotation> boundaryAnnotationType;
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(final UimaContext context) throws ResourceInitializationException {
 		super.initialize(context);
-		Class<?> clazz;
-		try {
-			clazz = Class.forName(segmentAnnotationTypeName);
-			segmentAnnotationType = (Class<? extends Annotation>) clazz;
-		} catch (final ClassNotFoundException e) {
-			throw new ResourceInitializationException(e);
-		}
-
-		try {
-			clazz = Class.forName(boundaryAnnotationTypeName);
-			boundaryAnnotationType = (Class<? extends Annotation>) clazz;
-		} catch (final ClassNotFoundException e) {
-			throw new ResourceInitializationException(e);
-		}
-
+		segmentAnnotationType = TypeParameterUtil.getClass(segmentAnnotationTypeName);
+		boundaryAnnotationType = TypeParameterUtil.getClass(boundaryAnnotationTypeName);
 	}
 
 	@Override
