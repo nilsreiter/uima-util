@@ -3,6 +3,7 @@ package de.unistuttgart.ims.uimautil.export;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.jcas.cas.TOP;
 
+@Deprecated
 public class PrimitiveColumn extends Column {
 	Feature feature;
 

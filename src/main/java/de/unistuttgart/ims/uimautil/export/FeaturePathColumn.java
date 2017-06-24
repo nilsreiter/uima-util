@@ -3,6 +3,7 @@ package de.unistuttgart.ims.uimautil.export;
 import org.apache.uima.cas.FeaturePath;
 import org.apache.uima.jcas.cas.TOP;
 
+@Deprecated
 public class FeaturePathColumn extends Column {
 
 	FeaturePath featurePath;
