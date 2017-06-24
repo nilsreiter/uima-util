@@ -379,4 +379,38 @@ public class CoNLLExport {
 	public void clearResult() {
 		result.clear();
 	}
+
+	class Tree {
+		Column column;
+		List<Tree> children = new ArrayList<Tree>();
+
+		public Tree(Column col) {
+			column = col;
+		}
+
+		public Column getColumn() {
+			return column;
+		}
+
+		public void setColumn(Column column) {
+			this.column = column;
+		}
+
+		public List<Tree> getChildren() {
+			return children;
+		}
+
+		public void setChildren(List<Tree> children) {
+			this.children = children;
+		}
+
+		public boolean add(Tree e) {
+			return children.add(e);
+		}
+
+		public boolean isLeaf() {
+			return children.isEmpty();
+		}
+
+	}
 }
