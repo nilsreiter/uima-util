@@ -282,6 +282,21 @@ public class CoNLLExport {
 		}
 		String[] covTypes = this.getCoveringsForType(type);
 		for (int j = 0; j < covTypes.length; j++) {
+
+			paths = this.getXFeaturePathsForType(jcas.getTypeSystem().getType(covTypes[j]));
+			labels = this.getXColumnHeadersForType(jcas.getTypeSystem().getType(covTypes[j]));
+
+			try {
+				for (int i = 0; i < paths.length; i++)
+					labels[i] = Class.forName(covTypes[j]).getSimpleName() + "/" + labels[i];
+
+				Column ee = new MyCoveredColumn((Class<? extends Annotation>) Class.forName(covTypes[j]), paths);
+				ee.setLabel(labels);
+				eelist.add(ee);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
 			paths = getFeaturePathsForType(jcas.getTypeSystem().getType(covTypes[j]));
 			labels = getColumnHeadersForType(jcas.getTypeSystem().getType(covTypes[j]));
 			FeaturePath[] path = new FeaturePath[paths.length];
@@ -315,34 +330,38 @@ public class CoNLLExport {
 			paths = this.getXFeaturePathsForType(coveredType);
 			labels = this.getXColumnHeadersForType(coveredType);
 
-			try {
-				Column ee = new MyCoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()),
-						paths);
-				ee.setLabel(labels);
-				eelist.add(ee);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
+			if (paths.length > 0)
+				try {
+					Column ee = new MyCoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()),
+							paths);
+					ee.setLabel(labels);
+					eelist.add(ee);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
 
 			labels = getColumnHeadersForType(coveredType);
 			paths = getFeaturePathsForType(coveredType);
-			FeaturePath[] path = new FeaturePath[paths.length];
-			for (int i = 0; i < path.length; i++) {
-				path[i] = jcas.createFeaturePath();
+			if (paths.length > 0) {
+				FeaturePath[] path = new FeaturePath[paths.length];
+				for (int i = 0; i < path.length; i++) {
+					path[i] = jcas.createFeaturePath();
+					try {
+						labels[i] = coveredType.getShortName() + "/" + labels[i];
+						path[i].initialize(paths[i]);
+						path[i].typeInit(coveredType);
+					} catch (CASException e) {
+						e.printStackTrace();
+					}
+				}
 				try {
-					labels[i] = coveredType.getShortName() + "/" + labels[i];
-					path[i].initialize(paths[i]);
-					path[i].typeInit(coveredType);
-				} catch (CASException e) {
+					Column ee = new CoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()),
+							path);
+					ee.setLabel(labels);
+					eelist.add(ee);
+				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				}
-			}
-			try {
-				Column ee = new CoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()), path);
-				ee.setLabel(labels);
-				eelist.add(ee);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
 			}
 
 		}
