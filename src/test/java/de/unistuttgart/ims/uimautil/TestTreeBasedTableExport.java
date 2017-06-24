@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.INIConfiguration;
@@ -61,6 +62,7 @@ public class TestTreeBasedTableExport {
 
 	}
 
+	@Test
 	public void testOutput() {
 		conf.addProperty("de..tudarmstadt..ukp..dkpro..core..api..segmentation..type..Token.xpaths",
 				"begin,end,pos/PosValue,coveredText()");
@@ -71,10 +73,12 @@ public class TestTreeBasedTableExport {
 
 		System.out.println(t);
 		tbte.addArrayFeatureToPrint(JCasUtil.getType(jcas, TestSegment.class).getFeatureByBaseName("ArrayFeature"));
-		tbte.flatten(new LinkedList<Object>(), t);
+		List<List<Object>> table = new LinkedList<List<Object>>();
+		tbte.flatten(new LinkedList<Object>(), t, table);
+		System.out.println(table);
 		t = tbte.extendArrays(t);
 		System.out.println(t);
 
-		tbte.flatten(new LinkedList<Object>(), t);
+		tbte.flatten(new LinkedList<Object>(), t, table);
 	}
 }

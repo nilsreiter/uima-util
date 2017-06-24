@@ -37,7 +37,9 @@ public class TreeBasedTableExport {
 	public List<List<Object>> export(JCas jcas) {
 		Tree<FeatureStructure> tree = populateTree(jcas);
 		tree = extendArrays(tree);
-		return null;
+		List<List<Object>> table = new LinkedList<List<Object>>();
+		flatten(new LinkedList<Object>(), tree, table);
+		return table;
 	}
 
 	protected List<Object> getColumns(FeatureStructure fs) {
@@ -64,13 +66,13 @@ public class TreeBasedTableExport {
 
 	}
 
-	protected void flatten(List<Object> history, Tree<FeatureStructure> tree) {
+	protected void flatten(List<Object> history, Tree<FeatureStructure> tree, List<List<Object>> table) {
 		history.addAll(getColumns(tree.getPayload()));
 		if (tree.isLeaf()) {
-			System.out.println(history);
+			table.add(history);
 		} else {
 			for (Tree<FeatureStructure> child : tree.getChildren()) {
-				flatten(new LinkedList<Object>(history), child);
+				flatten(new LinkedList<Object>(history), child, table);
 			}
 		}
 	}
