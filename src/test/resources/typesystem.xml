@@ -17,15 +17,23 @@
         </featureDescription>
         <featureDescription>
         	<name>MyIntFeature</name>
-        	<description />
+        	<description/>
         	<rangeTypeName>uima.cas.Integer</rangeTypeName>
         </featureDescription>
       </features>
     </typeDescription>
     <typeDescription>
     	<name>de.unistuttgart.ims.uimautil.api.TestSegment</name>
-    	<description />
+    	<description/>
 		<supertypeName>uima.tcas.Annotation</supertypeName>
+    <features>
+        <featureDescription>
+          <name>ArrayFeature</name>
+          <description/>
+          <rangeTypeName>uima.cas.FSArray</rangeTypeName>
+          <elementType>de.unistuttgart.ims.uimautil.api.TestType</elementType>
+        </featureDescription>
+      </features>
     </typeDescription>
   </types>
 </typeSystemDescription>

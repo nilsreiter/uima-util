@@ -38,6 +38,10 @@ public class MyFeaturePathColumn extends Column {
 		return apply(a, pathParts);
 	}
 
+	public Object getValue(FeatureStructure a) {
+		return apply(a, pathParts);
+	}
+
 	@Override
 	public boolean isMultiplying() {
 		return false;
@@ -72,7 +76,7 @@ public class MyFeaturePathColumn extends Column {
 		return null;
 	}
 
-	private Object apply(TOP a, String[] path) {
+	private Object apply(FeatureStructure a, String[] path) {
 		FeatureStructure current = a;
 		for (int i = 0; i < path.length; i++) {
 			if (current == null)
