@@ -342,26 +342,23 @@ public class CoNLLExport {
 
 			labels = getColumnHeadersForType(coveredType);
 			paths = getFeaturePathsForType(coveredType);
-			if (paths.length > 0) {
-				FeaturePath[] path = new FeaturePath[paths.length];
-				for (int i = 0; i < path.length; i++) {
-					path[i] = jcas.createFeaturePath();
-					try {
-						labels[i] = coveredType.getShortName() + "/" + labels[i];
-						path[i].initialize(paths[i]);
-						path[i].typeInit(coveredType);
-					} catch (CASException e) {
-						e.printStackTrace();
-					}
-				}
+			FeaturePath[] path = new FeaturePath[paths.length];
+			for (int i = 0; i < path.length; i++) {
+				path[i] = jcas.createFeaturePath();
 				try {
-					Column ee = new CoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()),
-							path);
-					ee.setLabel(labels);
-					eelist.add(ee);
-				} catch (ClassNotFoundException e) {
+					labels[i] = coveredType.getShortName() + "/" + labels[i];
+					path[i].initialize(paths[i]);
+					path[i].typeInit(coveredType);
+				} catch (CASException e) {
 					e.printStackTrace();
 				}
+			}
+			try {
+				Column ee = new CoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()), path);
+				ee.setLabel(labels);
+				eelist.add(ee);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
 
 		}
