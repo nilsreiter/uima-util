@@ -26,6 +26,7 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.export.Column;
 import de.unistuttgart.ims.uimautil.export.CoveredColumn;
 import de.unistuttgart.ims.uimautil.export.FeaturePathColumn;
+import de.unistuttgart.ims.uimautil.export.MyCoveredColumn;
 import de.unistuttgart.ims.uimautil.export.MyFeaturePathColumn;
 import de.unistuttgart.ims.uimautil.export.PrimitiveColumn;
 
@@ -310,6 +311,19 @@ public class CoNLLExport {
 		if (coveredType != null)
 
 		{
+
+			paths = this.getXFeaturePathsForType(coveredType);
+			labels = this.getXColumnHeadersForType(coveredType);
+
+			try {
+				Column ee = new MyCoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()),
+						paths);
+				ee.setLabel(labels);
+				eelist.add(ee);
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+
 			labels = getColumnHeadersForType(coveredType);
 			paths = getFeaturePathsForType(coveredType);
 			FeaturePath[] path = new FeaturePath[paths.length];
