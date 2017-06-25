@@ -8,6 +8,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.cas.TOP;
 import org.apache.uima.jcas.tcas.Annotation;
 
+@Deprecated
 public class CoveredColumn extends Column {
 
 	Class<? extends Annotation> coveredClass;
