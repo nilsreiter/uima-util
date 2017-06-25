@@ -12,9 +12,9 @@ import org.apache.uima.UIMAException;
 import org.apache.uima.cas.FeatureStructure;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.factory.JCasFactory;
-import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.cas.FSArray;
+import org.apache.uima.jcas.tcas.DocumentAnnotation;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -34,7 +34,8 @@ public class TestTreeBasedTableExport {
 		jcas.setDocumentText(
 				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.");
 		Token[] tokens = new Token[] { AnnotationFactory.createAnnotation(jcas, 0, 5, Token.class),
-				AnnotationFactory.createAnnotation(jcas, 6, 11, Token.class) };
+				AnnotationFactory.createAnnotation(jcas, 6, 11, Token.class),
+				AnnotationFactory.createAnnotation(jcas, 22, 25, Token.class) };
 		POS[] poss = new POS[] { AnnotationFactory.createAnnotation(jcas, 0, 5, POS.class),
 				AnnotationFactory.createAnnotation(jcas, 6, 11, POS.class) };
 		poss[0].setPosValue("A");
@@ -45,6 +46,7 @@ public class TestTreeBasedTableExport {
 		ts.setArrayFeature(new FSArray(jcas, 2));
 		ts.setArrayFeature(0, AnnotationFactory.createAnnotation(jcas, 0, 2, TestType.class));
 		ts.setArrayFeature(1, AnnotationFactory.createAnnotation(jcas, 5, 7, TestType.class));
+		ts = AnnotationFactory.createAnnotation(jcas, 21, 30, TestSegment.class);
 		conf = new INIConfiguration();
 	}
 
@@ -53,32 +55,58 @@ public class TestTreeBasedTableExport {
 		conf.addProperty("de..tudarmstadt..ukp..dkpro..core..api..segmentation..type..Token.xpaths",
 				"begin,end,pos/PosValue,coveredText()");
 		TreeBasedTableExport tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
-		tbte.addTypeToExport(TestSegment.class);
-		tbte.addTypeToExport(Token.class);
+		tbte.addAnnotationType(TestSegment.class);
+		tbte.addAnnotationType(Token.class);
 		Tree<FeatureStructure> t = tbte.populateTree(jcas);
 		assertNotNull(t);
-		assertEquals(1, t.getChildren().size());
-		assertEquals(2, t.getChild(0).getChildren().size());
-
+		assertNotNull(t.getPayload());
+		assertEquals(DocumentAnnotation.class, t.getPayload().getClass());
+		assertEquals(2, t.size());
+		assertEquals(2, t.getChild(0).size());
+		assertEquals(3, t.height());
 	}
 
 	@Test
+	public void testTreeExtension() {
+
+		TreeBasedTableExport tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
+		tbte.addPathEntry(Token.class, "begin,end,pos/PosValue,coveredText()");
+		tbte.addArrayEntry(TestSegment.class, "ArrayFeature");
+		tbte.addAnnotationType(TestSegment.class);
+		tbte.addAnnotationType(Token.class);
+		Tree<FeatureStructure> t = tbte.populateTree(jcas);
+		t = tbte.extendArrays(t);
+		// System.out.println(t);
+		assertNotNull(t);
+		assertNotNull(t.getPayload());
+		assertEquals(DocumentAnnotation.class, t.getPayload().getClass());
+		assertEquals(2, t.size());
+		assertEquals(4, t.height());
+
+		t = t.getChild(0);
+		assertEquals(2, t.size());
+		assertEquals(TestSegment.class, t.getPayload().getClass());
+
+		t = t.getChild(1);
+		assertEquals(2, t.size());
+		assertEquals(TestType.class, t.getPayload().getClass());
+	}
+
 	public void testOutput() {
 		conf.addProperty("de..tudarmstadt..ukp..dkpro..core..api..segmentation..type..Token.xpaths",
 				"begin,end,pos/PosValue,coveredText()");
 		TreeBasedTableExport tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
-		tbte.addTypeToExport(TestSegment.class);
-		tbte.addTypeToExport(Token.class);
+		tbte.addAnnotationType(TestSegment.class);
+		tbte.addAnnotationType(Token.class);
 		Tree<FeatureStructure> t = tbte.populateTree(jcas);
 
 		System.out.println(t);
-		tbte.addArrayFeatureToPrint(JCasUtil.getType(jcas, TestSegment.class).getFeatureByBaseName("ArrayFeature"));
 		List<List<Object>> table = new LinkedList<List<Object>>();
-		tbte.flatten(new LinkedList<Object>(), t, table);
+		tbte.flatten(new LinkedList<Object>(), t, table, 0);
 		System.out.println(table);
 		t = tbte.extendArrays(t);
 		System.out.println(t);
 
-		tbte.flatten(new LinkedList<Object>(), t, table);
+		tbte.flatten(new LinkedList<Object>(), t, table, 0);
 	}
 }
