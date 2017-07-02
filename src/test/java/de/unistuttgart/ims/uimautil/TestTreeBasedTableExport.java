@@ -32,9 +32,7 @@ public class TestTreeBasedTableExport {
 
 	@Before
 	public void setUp() throws UIMAException {
-		jcas = JCasFactory.createJCas();
-		jcas.setDocumentText(
-				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.");
+		jcas = JCasFactory.createText("src/test/resources/lorem.txt");
 		Token[] tokens = new Token[] { AnnotationFactory.createAnnotation(jcas, 0, 5, Token.class),
 				AnnotationFactory.createAnnotation(jcas, 6, 11, Token.class),
 				AnnotationFactory.createAnnotation(jcas, 22, 25, Token.class) };
