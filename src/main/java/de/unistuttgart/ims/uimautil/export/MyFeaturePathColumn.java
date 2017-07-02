@@ -50,6 +50,8 @@ public class MyFeaturePathColumn extends Column {
 	private Object getPrimitiveFunction(FeatureStructure fs, String function) {
 		if (function.equalsIgnoreCase("coveredText()")) {
 			return ((Annotation) fs).getCoveredText();
+		} else if (function.equalsIgnoreCase("type()")) {
+			return fs.getType().getName();
 		}
 		return null;
 	}
