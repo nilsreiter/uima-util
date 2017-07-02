@@ -41,10 +41,15 @@ public class TreeBasedTableExport {
 
 	}
 
-	public synchronized List<List<Object>> convert(JCas jcas, boolean newHeader) {
+	protected Tree<FeatureStructure> getFullTree(JCas jcas) {
 		Tree<FeatureStructure> tree = populateTree(jcas);
 		tree = extendCoverings(tree);
 		tree = extendArrays(tree);
+		return tree;
+	}
+
+	public synchronized List<List<Object>> convert(JCas jcas, boolean newHeader) {
+		Tree<FeatureStructure> tree = getFullTree(jcas);
 		if (newHeader) {
 			headerDone = false;
 			header = new LinkedList<Object>();
