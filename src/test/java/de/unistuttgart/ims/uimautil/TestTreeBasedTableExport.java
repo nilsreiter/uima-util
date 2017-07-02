@@ -21,6 +21,8 @@ import org.junit.Test;
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.TreeBasedTableExport.Tree;
+import de.unistuttgart.ims.uimautil.api.TestMeta1;
+import de.unistuttgart.ims.uimautil.api.TestMeta2;
 import de.unistuttgart.ims.uimautil.api.TestSegment;
 import de.unistuttgart.ims.uimautil.api.TestType;
 
@@ -64,6 +66,50 @@ public class TestTreeBasedTableExport {
 		assertEquals(2, t.size());
 		assertEquals(2, t.getChild(0).size());
 		assertEquals(3, t.height());
+	}
+
+	@Test
+	public void testNonAnnotations() {
+		TestMeta1 tm = new TestMeta1(jcas);
+		tm.setMyFeature("v1");
+		tm.addToIndexes();
+
+		TreeBasedTableExport tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
+		tbte.addAnnotationType(TestMeta1.class);
+
+		Tree<FeatureStructure> tree = tbte.getFullTree(jcas);
+		assertNotNull(tree);
+		assertEquals(1, tree.size());
+		assertEquals(2, tree.height());
+		assertEquals(TestMeta1.class, tree.getChild(0).getPayload().getClass());
+		assertEquals("v1", ((TestMeta1) tree.getChild(0).getPayload()).getMyFeature());
+
+		// adding a second feature structure of the same type
+		tm = new TestMeta1(jcas);
+		tm.setMyFeature("v2");
+		tm.addToIndexes();
+
+		tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
+		tbte.addAnnotationType(TestMeta1.class);
+
+		tree = tbte.getFullTree(jcas);
+		assertNotNull(tree);
+		assertEquals(2, tree.size());
+		assertEquals(2, tree.height());
+		assertEquals(TestMeta1.class, tree.getChild(0).getPayload().getClass());
+		assertEquals(TestMeta1.class, tree.getChild(1).getPayload().getClass());
+		assertEquals("v1", ((TestMeta1) tree.getChild(0).getPayload()).getMyFeature());
+		assertEquals("v2", ((TestMeta1) tree.getChild(1).getPayload()).getMyFeature());
+
+		TestMeta2 tm2 = new TestMeta2(jcas);
+		tm2.setMyFeature("v3");
+		tm2.addToIndexes();
+		tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
+		tbte.addAnnotationType(TestMeta1.class);
+		tbte.addAnnotationType(TestMeta2.class);
+		tree = tbte.getFullTree(jcas);
+
+		System.out.println(tree);
 	}
 
 	@Test
