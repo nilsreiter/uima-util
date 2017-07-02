@@ -71,12 +71,18 @@ public class TreeBasedTableExport {
 					l = labels[i];
 				else
 					l = paths[i];
-				header.add((treelevel > 1 ? fs.getType().getShortName() + "." : "") + l);
+				header.add((treelevel > 1 ? getHeaderPrefixForType(fs.getType()) + "." : "") + l);
 			}
 		}
 
 		return r;
 
+	}
+
+	protected String getHeaderPrefixForType(Type type) {
+
+		return configuration.getString("typeNameMapping." + type.getName().replaceAll("\\.", ".."),
+				type.getShortName());
 	}
 
 	private String[] getColumnHeadersForType(Type type) {
