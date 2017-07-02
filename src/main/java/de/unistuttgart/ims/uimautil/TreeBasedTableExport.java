@@ -313,6 +313,12 @@ public class TreeBasedTableExport {
 			return b.toString();
 		}
 
+		/**
+		 * Returns the number of <strong>nodes</strong> to the first leaf node,
+		 * using depth-first search.
+		 * 
+		 * @return the height of the tree
+		 */
 		public int height() {
 			if (children.isEmpty()) {
 				return 1;
