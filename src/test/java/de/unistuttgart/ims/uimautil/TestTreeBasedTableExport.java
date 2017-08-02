@@ -138,6 +138,22 @@ public class TestTreeBasedTableExport {
 		assertEquals(TestType.class, t.getPayload().getClass());
 	}
 
+	@Test
+	public void testNoCoveredAnnotations() {
+		AnnotationFactory.createAnnotation(jcas, 31, 35, TestSegment.class);
+
+		TreeBasedTableExport tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
+		tbte.addPathEntry(Token.class, "begin,end,pos/PosValue,coveredText()");
+		tbte.addPathEntry(TestSegment.class, "begin,end");
+
+		tbte.addAnnotationType(TestSegment.class);
+		tbte.addAnnotationType(Token.class);
+		List<List<Object>> l = tbte.convert(jcas, false);
+		assertEquals(4, l.size());
+		System.out.println(l);
+
+	}
+
 	public void testOutput() {
 		conf.addProperty("de..tudarmstadt..ukp..dkpro..core..api..segmentation..type..Token.xpaths",
 				"begin,end,pos/PosValue,coveredText()");
