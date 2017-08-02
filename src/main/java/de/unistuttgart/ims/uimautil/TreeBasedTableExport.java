@@ -19,13 +19,21 @@ import org.apache.uima.jcas.tcas.Annotation;
 import de.unistuttgart.ims.uimautil.export.MyFeaturePathColumn;
 
 public class TreeBasedTableExport {
+	public static enum MissingValueBehaviour {
+		FILL, OMIT
+	};
+
+	MissingValueBehaviour missingValueBehaviour = MissingValueBehaviour.FILL;
+
 	Configuration configuration;
 
 	List<Class<? extends TOP>> annotationTypes = new LinkedList<Class<? extends TOP>>();
 
 	TypeSystem typeSystem;
 	List<Object> header = new LinkedList<Object>();
-	boolean headerDone = false;
+	transient boolean headerDone = false;
+
+	transient int tableWidth = -1;
 
 	public TreeBasedTableExport(Configuration config, TypeSystem ts) {
 		typeSystem = ts;
@@ -131,7 +139,19 @@ public class TreeBasedTableExport {
 	protected void flatten(List<Object> history, Tree<FeatureStructure> tree, List<List<Object>> table, int treelevel) {
 		history.addAll(getColumns(tree.getPayload(), treelevel));
 		if (tree.isLeaf()) {
-			table.add(history);
+			if (history.size() == header.size())
+				table.add(history);
+			else
+				switch (missingValueBehaviour) {
+				case OMIT:
+					break;
+				default:
+					do {
+						history.add(null);
+					} while (history.size() < header.size());
+					table.add(history);
+					break;
+				}
 			headerDone = true;
 		} else {
 			for (Tree<FeatureStructure> child : tree.getChildren()) {
@@ -342,5 +362,13 @@ public class TreeBasedTableExport {
 
 	public boolean addAnnotationType(Class<? extends TOP> type) {
 		return annotationTypes.add(type);
+	}
+
+	public MissingValueBehaviour getMissingValueBehaviour() {
+		return missingValueBehaviour;
+	}
+
+	public void setMissingValueBehaviour(MissingValueBehaviour missingValueBehaviour) {
+		this.missingValueBehaviour = missingValueBehaviour;
 	}
 }
