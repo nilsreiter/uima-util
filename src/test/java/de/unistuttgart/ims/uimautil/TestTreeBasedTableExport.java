@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
+import de.unistuttgart.ims.uimautil.TreeBasedTableExport.MissingValueBehaviour;
 import de.unistuttgart.ims.uimautil.TreeBasedTableExport.Tree;
 import de.unistuttgart.ims.uimautil.api.TestMeta1;
 import de.unistuttgart.ims.uimautil.api.TestMeta2;
@@ -150,7 +151,10 @@ public class TestTreeBasedTableExport {
 		tbte.addAnnotationType(Token.class);
 		List<List<Object>> l = tbte.convert(jcas, false);
 		assertEquals(4, l.size());
-		System.out.println(l);
+
+		tbte.setMissingValueBehaviour(MissingValueBehaviour.OMIT);
+		l = tbte.convert(jcas, false);
+		assertEquals(3, l.size());
 
 	}
 
