@@ -38,6 +38,10 @@ public class MyFeaturePathColumn extends Column {
 		return apply(a, pathParts);
 	}
 
+	public Object getValue(FeatureStructure a) {
+		return apply(a, pathParts);
+	}
+
 	@Override
 	public boolean isMultiplying() {
 		return false;
@@ -46,6 +50,8 @@ public class MyFeaturePathColumn extends Column {
 	private Object getPrimitiveFunction(FeatureStructure fs, String function) {
 		if (function.equalsIgnoreCase("coveredText()")) {
 			return ((Annotation) fs).getCoveredText();
+		} else if (function.equalsIgnoreCase("type()")) {
+			return fs.getType().getName();
 		}
 		return null;
 	}
@@ -72,7 +78,7 @@ public class MyFeaturePathColumn extends Column {
 		return null;
 	}
 
-	private Object apply(TOP a, String[] path) {
+	private Object apply(FeatureStructure a, String[] path) {
 		FeatureStructure current = a;
 		for (int i = 0; i < path.length; i++) {
 			if (current == null)

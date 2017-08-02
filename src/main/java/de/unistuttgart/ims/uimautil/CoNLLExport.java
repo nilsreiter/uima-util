@@ -26,10 +26,9 @@ import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Token;
 import de.unistuttgart.ims.uimautil.export.Column;
 import de.unistuttgart.ims.uimautil.export.CoveredColumn;
 import de.unistuttgart.ims.uimautil.export.FeaturePathColumn;
-import de.unistuttgart.ims.uimautil.export.MyCoveredColumn;
-import de.unistuttgart.ims.uimautil.export.MyFeaturePathColumn;
 import de.unistuttgart.ims.uimautil.export.PrimitiveColumn;
 
+@Deprecated
 public class CoNLLExport {
 	Configuration configuration;
 
@@ -211,26 +210,6 @@ public class CoNLLExport {
 
 	}
 
-	private String[] getXFeaturePathsForType(Type type) {
-		String confKey = type.getName().replaceAll("\\.", "..") + ".xpaths";
-		String confEntry = configuration.getString(confKey, null);
-		if (confEntry != null && !confEntry.isEmpty())
-			return confEntry.split(",");
-		else
-			return new String[0];
-
-	}
-
-	private String[] getXColumnHeadersForType(Type type) {
-		String confKey = type.getName().replaceAll("\\.", "..") + ".xlabels";
-		String confEntry = configuration.getString(confKey, null);
-		if (confEntry != null && !confEntry.isEmpty())
-			return confEntry.split(",");
-		else
-			return new String[0];
-
-	}
-
 	@SuppressWarnings("unchecked")
 	private ArrayList<ArrayList<Object>> deepClone(ArrayList<ArrayList<Object>> list) {
 		ArrayList<ArrayList<Object>> ret = new ArrayList<ArrayList<Object>>();
@@ -250,20 +229,9 @@ public class CoNLLExport {
 				eelist.add(pee);
 			}
 		}
-		String[] paths = this.getXFeaturePathsForType(type);
-		String[] labels = this.getXColumnHeadersForType(type);
-		for (int i = 0; i < paths.length; i++) {
-			String path = paths[i];
-			if (labels.length > i) {
-				eelist.add(new MyFeaturePathColumn(path, labels[i]));
-			} else {
-				eelist.add(new MyFeaturePathColumn(path));
-			}
 
-		}
-
-		paths = this.getFeaturePathsForType(type);
-		labels = this.getColumnHeadersForType(type);
+		String[] paths = this.getFeaturePathsForType(type);
+		String[] labels = this.getColumnHeadersForType(type);
 		for (int i = 0; i < paths.length; i++) {
 			String path = paths[i];
 			FeaturePath fp = jcas.createFeaturePath();
@@ -282,6 +250,7 @@ public class CoNLLExport {
 		}
 		String[] covTypes = this.getCoveringsForType(type);
 		for (int j = 0; j < covTypes.length; j++) {
+
 			paths = getFeaturePathsForType(jcas.getTypeSystem().getType(covTypes[j]));
 			labels = getColumnHeadersForType(jcas.getTypeSystem().getType(covTypes[j]));
 			FeaturePath[] path = new FeaturePath[paths.length];
@@ -311,18 +280,6 @@ public class CoNLLExport {
 		if (coveredType != null)
 
 		{
-
-			paths = this.getXFeaturePathsForType(coveredType);
-			labels = this.getXColumnHeadersForType(coveredType);
-
-			try {
-				Column ee = new MyCoveredColumn((Class<? extends Annotation>) Class.forName(coveredType.getName()),
-						paths);
-				ee.setLabel(labels);
-				eelist.add(ee);
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
 
 			labels = getColumnHeadersForType(coveredType);
 			paths = getFeaturePathsForType(coveredType);
@@ -363,4 +320,5 @@ public class CoNLLExport {
 	public void clearResult() {
 		result.clear();
 	}
+
 }
