@@ -76,6 +76,9 @@ public class TreeBasedTableExport {
 	}
 
 	protected String[] getFeaturesForType(Type t) {
+		if (!programmaticFeatures.containsKey(t.toString())) {
+			return new String[0];
+		}
 		String[] r = new String[programmaticFeatures.get(t.toString()).size()];
 		int i = 0;
 		for (String f : programmaticFeatures.get(t.toString())) {
