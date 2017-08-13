@@ -79,7 +79,7 @@ public class TreeBasedTableExport {
 		String[] r = new String[programmaticFeatures.get(t.toString()).size()];
 		int i = 0;
 		for (String f : programmaticFeatures.get(t.toString())) {
-			r[i] = f;
+			r[i++] = f;
 		}
 		return r;
 	}
