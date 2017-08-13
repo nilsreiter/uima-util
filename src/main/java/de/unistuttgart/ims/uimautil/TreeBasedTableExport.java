@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.uima.cas.Feature;
 import org.apache.uima.cas.FeatureStructure;
@@ -34,6 +37,8 @@ public class TreeBasedTableExport {
 	transient boolean headerDone = false;
 
 	transient int tableWidth = -1;
+
+	MultiValuedMap<String, String> programmaticFeatures = new HashSetValuedHashMap<String, String>();
 
 	public TreeBasedTableExport(Configuration config, TypeSystem ts) {
 		typeSystem = ts;
@@ -70,11 +75,23 @@ public class TreeBasedTableExport {
 		return table;
 	}
 
+	protected String[] getFeaturesForType(Type t) {
+		String[] r = new String[programmaticFeatures.get(t.toString()).size()];
+		int i = 0;
+		for (String f : programmaticFeatures.get(t.toString())) {
+			r[i] = f;
+		}
+		return r;
+	}
+
 	protected List<Object> getColumns(FeatureStructure fs, int treelevel) {
 		List<Object> r = new LinkedList<Object>();
 
 		String[] paths = getUnaryFeaturePathsForType(fs.getType());
 		String[] labels = getColumnHeadersForType(fs.getType());
+		String[] additionalFeatures = getFeaturesForType(fs.getType());
+		paths = ArrayUtils.addAll(paths, additionalFeatures);
+		labels = ArrayUtils.addAll(labels, additionalFeatures);
 		for (int i = 0; i < paths.length; i++) {
 			MyFeaturePathColumn pcol = new MyFeaturePathColumn(paths[i]);
 			r.add(pcol.getValue(fs));
@@ -158,6 +175,10 @@ public class TreeBasedTableExport {
 				flatten(new LinkedList<Object>(history), child, table, treelevel + 1);
 			}
 		}
+	}
+
+	public void addExportFeatures(Type t, String baseFeatureName) {
+		this.programmaticFeatures.put(t.getName(), baseFeatureName);
 	}
 
 	protected Tree<FeatureStructure> extendArrays(Tree<FeatureStructure> tree) {
