@@ -16,6 +16,7 @@ import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
@@ -36,6 +37,7 @@ public class TestNGramTaggerLong {
 		jcas = iterable.iterator().next();
 	}
 
+	@Ignore
 	@Test
 	public void testLongText() throws ResourceInitializationException, UIMAException, IOException {
 

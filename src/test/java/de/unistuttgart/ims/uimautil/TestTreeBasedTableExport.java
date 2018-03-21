@@ -10,6 +10,7 @@ import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.configuration2.INIConfiguration;
 import org.apache.uima.UIMAException;
 import org.apache.uima.cas.FeatureStructure;
+import org.apache.uima.cas.Type;
 import org.apache.uima.fit.factory.AnnotationFactory;
 import org.apache.uima.fit.factory.JCasFactory;
 import org.apache.uima.jcas.JCas;
@@ -31,9 +32,15 @@ public class TestTreeBasedTableExport {
 	JCas jcas;
 	Configuration conf;
 
+	Type testTypeType, tokenType;
+
 	@Before
 	public void setUp() throws UIMAException {
 		jcas = JCasFactory.createJCas();
+
+		testTypeType = jcas.getTypeSystem().getType(TestType.class.getName());
+		tokenType = jcas.getTypeSystem().getType(Token.class.getName());
+
 		jcas.setDocumentText(
 				"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.");
 		Token[] tokens = new Token[] { AnnotationFactory.createAnnotation(jcas, 0, 5, Token.class),
@@ -155,6 +162,17 @@ public class TestTreeBasedTableExport {
 		tbte.setMissingValueBehaviour(MissingValueBehaviour.OMIT);
 		l = tbte.convert(jcas, false);
 		assertEquals(3, l.size());
+
+	}
+
+	@Test
+	public void testAdditionalFeatures() {
+		TreeBasedTableExport tbte = new TreeBasedTableExport(conf, jcas.getTypeSystem());
+		tbte.addAnnotationType(TestType.class);
+		tbte.addExportFeatures(testTypeType, "MyFeature");
+		List<List<Object>> r = tbte.convert(jcas, false);
+		assertEquals(2, r.size());
+		assertEquals(1, r.get(0).size());
 
 	}
 
