@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.unistuttgart.ims</groupId>
 	<artifactId>uimautil</artifactId>
-	<version>0.7.5-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<url>https://github.com/nilsreiter/uima-util</url>
@@ -141,6 +141,11 @@
 			<artifactId>commons-collections4</artifactId>
 			<version>4.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.11.2</version>
+		</dependency>
 	</dependencies>
 	<issueManagement>
 		<system>GitHub Issues</system>
@@ -269,7 +274,7 @@
 							<!-- REQUIRED -->
 							<typeSystemIncludes>
 								<!-- one or more ant-like file patterns identifying top level descriptors -->
-								<typeSystemInclude>src/main/resources/de/unistuttgart/ims/uimautil/WordListDescription.xml</typeSystemInclude>
+								<typeSystemInclude>src/main/resources/de/unistuttgart/ims/uimautil/*.xml</typeSystemInclude>
 							</typeSystemIncludes>
 
 							<!-- true or false, default = false -->
@@ -279,7 +284,6 @@
 								via other projects. -->
 							<!-- OPTIONAL -->
 							<limitToProject>true</limitToProject>
-							<outputDirectory>${project.build.directory}/main/java</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>
