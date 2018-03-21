@@ -21,6 +21,7 @@ import org.apache.uima.fit.pipeline.SimplePipeline;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ResourceInitializationException;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.lexmorph.type.pos.POS;
@@ -53,6 +54,7 @@ public class TestCoNLLCasConsumer {
 	}
 
 	@Test
+	@Ignore
 	public void testExporter2()
 			throws AnalysisEngineProcessException, ResourceInitializationException, FileNotFoundException, IOException {
 		SimplePipeline.runPipeline(jcas,
@@ -84,9 +86,9 @@ public class TestCoNLLCasConsumer {
 			throws AnalysisEngineProcessException, ResourceInitializationException, FileNotFoundException, IOException {
 		SimplePipeline.runPipeline(jcas,
 				AnalysisEngineFactory.createEngineDescription(CoNLLCasConsumer.class,
-						CoNLLCasConsumer.PARAM_ANNOTATION_CLASS, TestSegment.class,
-						CoNLLCasConsumer.PARAM_OUTPUT_FILE, "target/conll3.csv",
-						CoNLLCasConsumer.PARAM_CONFIGURATION_FILE, "file:src/test/resources/CoNLLExportConfig2.ini"));
+						CoNLLCasConsumer.PARAM_ANNOTATION_CLASS, TestSegment.class, CoNLLCasConsumer.PARAM_OUTPUT_FILE,
+						"target/conll3.csv", CoNLLCasConsumer.PARAM_CONFIGURATION_FILE,
+						"file:src/test/resources/CoNLLExportConfig2.ini"));
 
 		CSVParser csvp = new CSVParser(new FileReader("target/conll3.csv"), CSVFormat.DEFAULT.withHeader());
 		Iterator<CSVRecord> iter = csvp.iterator();
