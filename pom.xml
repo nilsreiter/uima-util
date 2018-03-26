@@ -77,6 +77,7 @@
     		de.tudarmstadt.ukp.dkpro.core.api.segmentation-asl
     	</artifactId>
 			<version>${dkpro.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
@@ -84,6 +85,7 @@
 				de.tudarmstadt.ukp.dkpro.core.api.metadata-asl
 			</artifactId>
 			<version>${dkpro.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>de.tudarmstadt.ukp.dkpro.core</groupId>
@@ -112,6 +114,7 @@
 				de.tudarmstadt.ukp.dkpro.core.api.io-asl
 			</artifactId>
 			<version>${dkpro.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
