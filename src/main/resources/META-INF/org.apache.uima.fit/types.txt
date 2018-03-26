@@ -1,1 +1,2 @@
 classpath*:de/unistuttgart/ims/uimautil/WordListDescription.xml
+classpath*:de/unistuttgart/ims/uimautil/GenericXmlReader.xml
