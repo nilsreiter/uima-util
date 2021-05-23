@@ -150,6 +150,7 @@ public class AnnotationUtil {
 	 * 
 	 * @param annotation The annotation to be trimmed.
 	 * @param ws         An array of characters which are considered whitespace
+	 * @param <T>        The annotation type.
 	 * @return The trimmed annotation
 	 * @since 0.4.2
 	 */

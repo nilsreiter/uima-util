@@ -32,18 +32,18 @@ import de.unistuttgart.quadrama.io.core.type.XMLParsingDescription;
  * string the element contains. Consider, as an example, the XML fragment
  * <code>&lt;s&gt;&lt;det&gt;the&lt;/det&gt; &lt;n&gt;dog&lt;/n&gt;&lt;/s&gt;</code>.
  * In the JCas, this will be represented as the document text "the dog", with
- * three annotations of the type {@link XMLElement}: One annotation covers the
- * entire string (and has the tag name <code>s</code> as a feature), one
- * annotation covers "the" (tag name: <code>det</code>), and one annotation
- * covers "dog" (tag name: <code>n</code>). In addition, we store a CSS selector
- * for each annotation, which allows finding the element in the DOM tree. After
- * the initial conversion, rules are applied to convert some XML elements to
- * other UIMA annotations. Rules are expressed in CSS-like syntax.
+ * three annotations of the type XMLElement: One annotation covers the entire
+ * string (and has the tag name <code>s</code> as a feature), one annotation
+ * covers "the" (tag name: <code>det</code>), and one annotation covers "dog"
+ * (tag name: <code>n</code>). In addition, we store a CSS selector for each
+ * annotation, which allows finding the element in the DOM tree. After the
+ * initial conversion, rules are applied to convert some XML elements to other
+ * UIMA annotations. Rules are expressed in CSS-like syntax.
  * 
  * <h2>Rule syntax</h2> The CSS selectors are interpreted by the JSoup library.
  * See {@link org.jsoup.select.Selector} for a detailed description. Classes
- * implementing {@link de.unistuttgart.quadrama.io.core.AbstractDramaUrlReader}
- * contain usage examples.
+ * implementing de.unistuttgart.quadrama.io.core.AbstractDramaUrlReader contain
+ * usage examples.
  * 
  * 
  * 
@@ -198,13 +198,11 @@ public class GenericXmlReader<D extends TOP> {
 
 		/**
 		 * 
-		 * @param selector                The CSS selector
-		 * @param targetClass             The target class
-		 * @param callback                A function to be called for every instance.
-		 *                                Can be null.
-		 * @param global                  Whether to apply the rule globally or just for
-		 *                                the text part
-		 * @param createFeatureStructures Whether to create new feature structures
+		 * @param selector    The CSS selector
+		 * @param targetClass The target class
+		 * @param callback    A function to be called for every instance. Can be null.
+		 * @param global      Whether to apply the rule globally or just for the text
+		 *                    part
 		 */
 		public Rule(String selector, Class<T> targetClass, BiConsumer<T, Element> callback, boolean global) {
 			this.selector = selector;

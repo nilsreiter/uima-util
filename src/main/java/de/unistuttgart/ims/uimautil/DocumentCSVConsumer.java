@@ -27,10 +27,10 @@ import org.dkpro.core.api.io.JCasFileWriter_ImplBase;
 
 /**
  * A UIMA component to generate a Weka-compatible arff-file from a set of
- * {@link weka.core.Instances}, based on an annotation type that has to be
- * specified. Features of type {@code uima.cas.String}, {@code uima.cas.Double}
- * and {@code uima.cas.Integer} are converted into string resp. numeric
- * features. This component generates an arff file for each document.
+ * weka.core.Instances, based on an annotation type that has to be specified.
+ * Features of type {@code uima.cas.String}, {@code uima.cas.Double} and
+ * {@code uima.cas.Integer} are converted into string resp. numeric features.
+ * This component generates an arff file for each document.
  * 
  * @author reiterns
  *
