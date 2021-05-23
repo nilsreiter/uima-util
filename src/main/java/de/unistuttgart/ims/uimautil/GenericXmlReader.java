@@ -51,6 +51,7 @@ import de.unistuttgart.quadrama.io.core.type.XMLParsingDescription;
  * 
  * @since 1.0.0
  */
+@Deprecated
 public class GenericXmlReader<D extends TOP> {
 
 	/**
@@ -186,8 +187,7 @@ public class GenericXmlReader<D extends TOP> {
 	 * This class represents the rules we apply
 	 * 
 	 *
-	 * @param <T>
-	 *            Rules are specific for a UIMA type
+	 * @param <T> Rules are specific for a UIMA type
 	 */
 	public static class Rule<T extends TOP> {
 		String selector;
@@ -198,16 +198,13 @@ public class GenericXmlReader<D extends TOP> {
 
 		/**
 		 * 
-		 * @param selector
-		 *            The CSS selector
-		 * @param targetClass
-		 *            The target class
-		 * @param callback
-		 *            A function to be called for every instance. Can be null.
-		 * @param global
-		 *            Whether to apply the rule globally or just for the text part
-		 * @param createFeatureStructures
-		 *            Whether to create new feature structures
+		 * @param selector                The CSS selector
+		 * @param targetClass             The target class
+		 * @param callback                A function to be called for every instance.
+		 *                                Can be null.
+		 * @param global                  Whether to apply the rule globally or just for
+		 *                                the text part
+		 * @param createFeatureStructures Whether to create new feature structures
 		 */
 		public Rule(String selector, Class<T> targetClass, BiConsumer<T, Element> callback, boolean global) {
 			this.selector = selector;
