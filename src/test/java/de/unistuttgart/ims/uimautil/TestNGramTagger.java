@@ -13,12 +13,12 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.dkpro.core.matetools.MateLemmatizer;
+import org.dkpro.core.tokit.BreakIteratorSegmenter;
 import org.junit.Before;
 import org.junit.Test;
 
 import de.tudarmstadt.ukp.dkpro.core.api.segmentation.type.Lemma;
-import de.tudarmstadt.ukp.dkpro.core.matetools.MateLemmatizer;
-import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.unistuttgart.ims.uimautil.api.TestType;
 
 public class TestNGramTagger {
@@ -36,7 +36,7 @@ public class TestNGramTagger {
 	@Test
 	public void testTagging() throws AnalysisEngineProcessException, ResourceInitializationException {
 		assertTrue(JCasUtil.exists(jcas, Lemma.class));
-		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+		final ExternalResourceDescription erd = ExternalResourceFactory.createResourceDescription(
 				NGramTagger.NGramList.class, NGramTagger.NGramList.PARAM_SOURCE_URL,
 				getClass().getClassLoader().getResource("testngramlist.txt").toString());
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(NGramTagger.class,

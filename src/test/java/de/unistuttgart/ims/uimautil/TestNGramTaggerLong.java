@@ -15,13 +15,13 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.resource.ExternalResourceDescription;
 import org.apache.uima.resource.ResourceInitializationException;
+import org.dkpro.core.io.text.TextReader;
+import org.dkpro.core.stanfordnlp.StanfordLemmatizer;
+import org.dkpro.core.tokit.BreakIteratorSegmenter;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import de.tudarmstadt.ukp.dkpro.core.io.text.TextReader;
-import de.tudarmstadt.ukp.dkpro.core.stanfordnlp.StanfordLemmatizer;
-import de.tudarmstadt.ukp.dkpro.core.tokit.BreakIteratorSegmenter;
 import de.unistuttgart.ims.uimautil.api.TestType;
 
 public class TestNGramTaggerLong {
@@ -41,7 +41,7 @@ public class TestNGramTaggerLong {
 	@Test
 	public void testLongText() throws ResourceInitializationException, UIMAException, IOException {
 
-		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+		final ExternalResourceDescription erd = ExternalResourceFactory.createResourceDescription(
 				NGramTagger.NGramList.class, NGramTagger.NGramList.PARAM_SOURCE_URL,
 				getClass().getClassLoader().getResource("war-and-peace-ngramlist.txt").toString());
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(NGramTagger.class,

@@ -14,8 +14,7 @@ import org.apache.uima.fit.util.JCasUtil;
 import org.apache.uima.jcas.JCas;
 import org.apache.uima.jcas.tcas.Annotation;
 import org.apache.uima.resource.ResourceInitializationException;
-
-import de.tudarmstadt.ukp.dkpro.core.api.io.JCasFileWriter_ImplBase;
+import org.dkpro.core.api.io.JCasFileWriter_ImplBase;
 
 public class MarkdownExporter extends JCasFileWriter_ImplBase {
 

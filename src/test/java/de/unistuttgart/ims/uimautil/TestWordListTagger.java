@@ -40,7 +40,7 @@ public class TestWordListTagger {
 
 	@Test
 	public void testTagging() throws AnalysisEngineProcessException, ResourceInitializationException {
-		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+		final ExternalResourceDescription erd = ExternalResourceFactory.createResourceDescription(
 				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
 				getClass().getClassLoader().getResource("testwordlist.txt").toString());
 		SimplePipeline.runPipeline(jcas,
@@ -54,7 +54,7 @@ public class TestWordListTagger {
 
 	@Test
 	public void testPlainTagging() throws AnalysisEngineProcessException, ResourceInitializationException {
-		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+		final ExternalResourceDescription erd = ExternalResourceFactory.createResourceDescription(
 				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
 				getClass().getClassLoader().getResource("testwordlist.txt").toString());
 		SimplePipeline.runPipeline(jcas, AnalysisEngineFactory.createEngineDescription(WordListTagger.class,
@@ -85,7 +85,7 @@ public class TestWordListTagger {
 
 	@Test
 	public void testPlainTaggingCI() throws AnalysisEngineProcessException, ResourceInitializationException {
-		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+		final ExternalResourceDescription erd = ExternalResourceFactory.createResourceDescription(
 				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
 				getClass().getClassLoader().getResource("testwordlist.txt").toString());
 		SimplePipeline.runPipeline(jcas,
@@ -126,7 +126,7 @@ public class TestWordListTagger {
 
 	@Test
 	public void testTaggingWithFeature() throws AnalysisEngineProcessException, ResourceInitializationException {
-		final ExternalResourceDescription erd = ExternalResourceFactory.createExternalResourceDescription(
+		final ExternalResourceDescription erd = ExternalResourceFactory.createResourceDescription(
 				WordListTagger.WordList.class, WordListTagger.WordList.PARAM_SOURCE_URL,
 				getClass().getResource("/testwordlist.txt").toString(), WordListTagger.WordList.PARAM_LIST_NAME, "bla");
 		SimplePipeline.runPipeline(jcas,
