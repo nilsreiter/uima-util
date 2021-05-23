@@ -23,8 +23,7 @@ import org.apache.uima.resource.ResourceInitializationException;
 import org.apache.uima.resource.metadata.FeatureDescription;
 import org.apache.uima.resource.metadata.TypeDescription;
 import org.apache.uima.resource.metadata.TypeSystemDescription;
-
-import de.tudarmstadt.ukp.dkpro.core.api.io.JCasFileWriter_ImplBase;
+import org.dkpro.core.api.io.JCasFileWriter_ImplBase;
 
 /**
  * A UIMA component to generate a Weka-compatible arff-file from a set of

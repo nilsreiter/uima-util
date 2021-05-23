@@ -1,6 +1,6 @@
 package de.unistuttgart.ims.uimautil;
 
-import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.uima.resource.ResourceInitializationException;
 
 public class TypeParameterUtil {
